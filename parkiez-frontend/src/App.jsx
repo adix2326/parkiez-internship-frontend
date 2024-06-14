@@ -1,9 +1,17 @@
-import Button from './components/button'
+import React from 'react';
+import Button from './components/button';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import TextInput from './components/textinput';
 
-export default function App() {
+const App = () => {
   return (
-    <h1 className="">
-      <Button/>
-    </h1>
-  )
-}
+    <BrowserRouter>
+      <Routes>
+        {/* <Route path='/btn' element={<Button text="addd" color="green" textcolor="white" />} /> */}
+        <Route path='/btn' element={<TextInput label="Username" type="text" placeholder="Enter your name" required="true"/>} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
+
+export default App;
