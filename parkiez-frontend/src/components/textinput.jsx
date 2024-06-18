@@ -1,12 +1,17 @@
-import React from 'react'
+import React from 'react';
 
-const TextInput = ({label,type,placeholder,required}) => {
-  return (
-    <div className='flex flex-col '>
-      <label className='text-xl font-semibold pl-2'>{label}</label>
-      <input className='bg-slate-50 border-2 border-green-5000 p-2 pl-5 text-xl rounded-xl outline-none font-sans focus:border-black' type={type} placeholder={placeholder} required={required} />
-    </div> 
-  )
-}
+const TextInput = ({ type, label, placeholder, required, value, onChange }) => (
+  <div className='flex flex-col'>
+    <label className='mb-2 font-medium'>{label}</label>
+    <input 
+      type={type} 
+      placeholder={placeholder} 
+      required={required} 
+      value={value} 
+      onChange={onChange} 
+      className='p-2 border rounded'
+    />
+  </div>
+);
 
-export default TextInput
+export default TextInput;

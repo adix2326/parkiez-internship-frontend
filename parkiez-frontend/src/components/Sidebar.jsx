@@ -9,13 +9,13 @@ const Sidebar = () => {
       </div>
       <ul>
         <li className="mb-4">
-          <Link to="/daily-report" className="text-green-700 hover:text-green-900">Daily Report</Link>
+          <Link to="/dashboard/daily-report" className="text-green-700 hover:text-green-900">Daily Report</Link>
         </li>
         <li className="mb-4">
-          <Link to="/analytics" className="text-green-700 hover:text-green-900">Analytics</Link>
+          <Link to="/dashboard/analytics" className="text-green-700 hover:text-green-900">Analytics</Link>
         </li>
         <li className="mb-4">
-          <Link to="/attendants" className="text-green-700 hover:text-green-900">Attendants</Link>
+          <Link to="/dashboard/attendants" className="text-green-700 hover:text-green-900">Attendants</Link>
         </li>
       </ul>
     </div>
