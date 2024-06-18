@@ -3,7 +3,7 @@ import TextInput from './textinput';
 import ParkiezLogo from '../assets/parkiez_logo.png'
 import CustomBtn from './button'
 
-const Operatorlogin = () => {
+const Attendantlogin = () => {
   return (
     <>
       <div className='bg-green-400 w-full h-screen sm:flex sm:justify-center sm:items-center'>
@@ -11,7 +11,6 @@ const Operatorlogin = () => {
           <img src={ParkiezLogo} alt="parkiez-logo" className='mx-auto' />
           <form className='flex flex-col gap-5' action="">
             <TextInput type="number" label="Phone Number" placeholder="9921388893"/>
-            <TextInput type="password" label="Password" placeholder="xxxxxx" />
             <CustomBtn text="Send OTP" type="btn" textcolor="white" />
             <TextInput type="number" label="OTP" placeholder="xxxxxx" />
             <CustomBtn text="Login" type="submit" textcolor="white" />
@@ -22,4 +21,4 @@ const Operatorlogin = () => {
   )
 }
 
-export default Operatorlogin
+export default Attendantlogin
