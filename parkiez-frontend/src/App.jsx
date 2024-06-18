@@ -1,17 +1,22 @@
 import React from 'react';
-import Button from './components/button';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import TextInput from './components/textinput';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Dashboard from './components/Dashboard';
+import DailyReport from './components/DailyReport';
+import Analytics from './components/Analytics';
+import Attendants from './components/Attendants';
 
-const App = () => {
+function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
-        {/* <Route path='/btn' element={<Button text="addd" color="green" textcolor="white" />} /> */}
-        <Route path='/btn' element={<TextInput label="Username" type="text" placeholder="Enter your name" required="true"/>} />
+        <Route path="/" element={<Dashboard />}>
+          <Route path="daily-report" element={<DailyReport />} />
+          <Route path="analytics" element={<Analytics />} />
+          <Route path="attendants" element={<Attendants />} />
+        </Route>
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
-};
+}
 
 export default App;
