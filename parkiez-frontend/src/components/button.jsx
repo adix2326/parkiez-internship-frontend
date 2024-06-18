@@ -1,8 +1,8 @@
 import React from 'react';
 
-const Button = ({ text, color, textcolor}) => {
+const Button = ({ text, textcolor, type, width}) => {
   return (
-    <button className={`bg-${color}-500 hover:bg-${color}-600 text-${textcolor} font-bold font-sans py-2 px-4 rounded w-full hover:shadow-xl` }>
+    <button type={type} className={`bg-green-400 hover:bg-green-600 text-${textcolor} font-bold font-serif py-2 px-4 rounded-full w-56 mx-auto shadow-md hover:shadow-xl` }>
       {text}
     </button>
   );
