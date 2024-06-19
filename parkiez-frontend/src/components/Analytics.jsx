@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip, PieChart, Pie, Cell, BarChart, Bar,
 } from 'recharts';
@@ -40,34 +40,48 @@ const COLORS = ['#0088FE', '#00C49F'];
 
 const Analytics = () => {
   const [selectedAttendant, setSelectedAttendant] = useState(initialData[0]);
+  const [chartDimensions, setChartDimensions] = useState({ width: 500, height: 300 });
 
   const handleSelectChange = (event) => {
     const selected = initialData.find(attendant => attendant.name === event.target.value);
     setSelectedAttendant(selected);
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth < 768 ? window.innerWidth - 50 : 500;
+      const height = window.innerWidth < 768 ? 200 : 300;
+      setChartDimensions({ width, height });
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Set initial dimensions
+
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div className="p-4">
       <h2 className="text-2xl mb-4">Analytics</h2>
-      <div className="mb-4">
-        <label htmlFor="attendant-select" className="block mb-2">Select Attendant:</label>
-        <select
-          id="attendant-select"
-          value={selectedAttendant.name}
-          onChange={handleSelectChange}
-          className="p-2 border border-gray-300 rounded w-full"
-        >
-          {initialData.map(attendant => (
-            <option key={attendant.name} value={attendant.name}>
-              {attendant.name}
-            </option>
-          ))}
-        </select>
-      </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
+        <div className="border p-4">
           <h3 className="text-xl mb-2">Occupied vs Unoccupied Parking</h3>
-          <PieChart width={400} height={400}>
+          <div className="mb-4">
+            <label htmlFor="attendant-select" className="block mb-2">Select Attendant:</label>
+            <select
+              id="attendant-select"
+              value={selectedAttendant.name}
+              onChange={handleSelectChange}
+              className="p-2 border border-gray-300 rounded w-full"
+            >
+              {initialData.map(attendant => (
+                <option key={attendant.name} value={attendant.name}>
+                  {attendant.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <PieChart width={chartDimensions.width} height={chartDimensions.height}>
             <Pie
               data={[
                 { name: 'Occupied', value: selectedAttendant.occupied },
@@ -86,10 +100,15 @@ const Analytics = () => {
             </Pie>
             <Tooltip />
           </PieChart>
+          <div className="text-center mt-4">
+            <p>Selected Attendant: <strong>{selectedAttendant.name}</strong></p>
+            <p><span className="inline-block w-4 h-4 mr-2" style={{ backgroundColor: COLORS[0] }}></span>Occupied</p>
+            <p><span className="inline-block w-4 h-4 mr-2" style={{ backgroundColor: COLORS[1] }}></span>Unoccupied</p>
+          </div>
         </div>
-        <div>
+        <div className="border p-4">
           <h3 className="text-xl mb-2">Daily Bookings</h3>
-          <LineChart width={500} height={300} data={dailyData}>
+          <LineChart width={chartDimensions.width} height={chartDimensions.height} data={dailyData}>
             <Line type="monotone" dataKey="bookings" stroke="#8884d8" />
             <CartesianGrid stroke="#ccc" />
             <XAxis dataKey="name" />
@@ -97,9 +116,9 @@ const Analytics = () => {
             <Tooltip />
           </LineChart>
         </div>
-        <div>
+        <div className="border p-4 md:col-span-2">
           <h3 className="text-xl mb-2">Monthly Bookings</h3>
-          <BarChart width={500} height={300} data={monthlyData}>
+          <BarChart width={chartDimensions.width} height={chartDimensions.height} data={monthlyData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="month" />
             <YAxis />

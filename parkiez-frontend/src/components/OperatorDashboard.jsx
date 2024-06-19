@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import Sidebar from './OperatorSidebar';
 import Header from './Header';
+import Sidebar from './OperatorSidebar';
 
 const Dashboard = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
   return (
     <div className="flex h-screen">
-      <Sidebar />
+      <Sidebar sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
       <div className="flex-1 flex flex-col">
-        <Header />
+        <Header toggleSidebar={toggleSidebar} />
         <div className="flex-1 p-4 overflow-y-auto">
           <Outlet />
         </div>

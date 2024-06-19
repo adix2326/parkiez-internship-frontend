@@ -1,58 +1,26 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
-const Header = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const sidebarRef = useRef(null);
+const Header = ({ toggleSidebar }) => {
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    const handleOutsideClick = (e) => {
-      if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
-        setSidebarOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleOutsideClick);
-
-    return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
-    };
-  }, []);
-
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
+  const handleLogout = () => {
+    navigate('/'); // Assuming '/' is the route for OperatorLogin
   };
 
   return (
     <div className="bg-green-200 p-4 flex justify-between items-center relative">
-      <div>
-        <button onClick={toggleSidebar} className="block lg:hidden text-2xl">
+      <div className="flex items-center space-x-4">
+        <button onClick={toggleSidebar} className="block text-2xl lg:hidden">
           ☰
         </button>
       </div>
       <h1 className="text-2xl">Dashboard</h1>
-      <div className="space-x-4">
-        <button className="px-4 py-2 bg-gray-300 rounded">Your Profile</button>
-        <button className="px-4 py-2 bg-gray-300 rounded">Account Settings</button>
-        <button className="px-4 py-2 bg-gray-300 rounded">Sign Out</button>
+      <div className="space-x-4 hidden lg:flex">
+        <Link to="/dashboard/profile" className="text-gray-800 hover:text-gray-900">Profile</Link>
+        <Link to="/dashboard/settings" className="text-gray-800 hover:text-gray-900">Settings</Link>
+        <button onClick={handleLogout} className="text-gray-800 hover:text-gray-900">Logout</button>
       </div>
-      {/* Sidebar */}
-      {sidebarOpen && (
-        <div ref={sidebarRef} className="lg:w-64 absolute top-0 right-0 h-full bg-green-200 transition-transform duration-300 ease-in-out transform translate-x-0">
-          <ul className="h-full flex flex-col items-center justify-center">
-            <li className="mb-4">
-              <Link to="/dashboard/daily-report" className="text-green-700 hover:text-green-900" onClick={() => setSidebarOpen(false)}>Daily Report</Link>
-            </li>
-            <li className="mb-4">
-              <Link to="/dashboard/analytics" className="text-green-700 hover:text-green-900" onClick={() => setSidebarOpen(false)}>Analytics</Link>
-            </li>
-            <li className="mb-4">
-              <Link to="/dashboard/attendants" className="text-green-700 hover:text-green-900" onClick={() => setSidebarOpen(false)}>Attendants</Link>
-            </li>
-          </ul>
-        </div>
-      )}
-      {/* End Sidebar */}
     </div>
   );
 };
