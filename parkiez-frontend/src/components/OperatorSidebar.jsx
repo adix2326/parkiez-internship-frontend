@@ -1,41 +1,61 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import ParkiezLogo from '../assets/parkiez_logo.png'; // Adjust the path according to your folder structure
+import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import InsertChartOutlinedRoundedIcon from '@mui/icons-material/InsertChartOutlinedRounded';
+import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
 const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    navigate('/'); // Assuming '/' is the route for OperatorLogin
+    navigate('/operatorlogin');
   };
 
   return (
-    <div className={`bg-green-200 fixed inset-0 z-50 transform ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out lg:relative lg:translate-x-0 lg:w-64`}>
-      <button onClick={toggleSidebar} className="absolute top-4 right-4 text-2xl lg:hidden">
+    <div className={`w-full bg-green-500 fixed inset-0 z-50 transform ${sidebarOpen ? '-translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out sm:bolck sm:translate-x-0 sm:w-64 sm:z-0`}>
+      <button onClick={toggleSidebar} className="absolute top-4 right-4 sm:hidden text-white font-bold border-2 border-white p-1 rounded-full w-9">
         ✕
       </button>
-      <div className="flex justify-center items-center mb-6 mt-16 lg:mt-0">
-        <img src={ParkiezLogo} alt="Parkiez Logo" className="h-10 w-10" />
-      </div>
-      <ul className="space-y-4">
-        <li>
-          <Link to="/dashboard/daily-report" className="text-green-700 hover:text-green-900" onClick={toggleSidebar}>Daily Report</Link>
-        </li>
-        <li>
-          <Link to="/dashboard/analytics" className="text-green-700 hover:text-green-900" onClick={toggleSidebar}>Analytics</Link>
-        </li>
-        <li>
-          <Link to="/dashboard/attendants" className="text-green-700 hover:text-green-900" onClick={toggleSidebar}>Attendants</Link>
-        </li>
-        <li>
-          <Link to="/dashboard/profile" className="text-green-700 hover:text-green-900" onClick={toggleSidebar}>Profile</Link>
-        </li>
-        <li>
-          <Link to="/dashboard/settings" className="text-green-700 hover:text-green-900" onClick={toggleSidebar}>Settings</Link>
-        </li>
-        <li>
-          <button className="text-green-700 hover:text-green-900" onClick={handleLogout}>Logout</button>
-        </li>
+      <ul className="absolute top-20 grid grid-col p-5 text-green-500 gap-5 text-2xl text-semibold w-full">
+        <Link to="/dashboard/daily-report" onClick={toggleSidebar}>
+          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl">
+            Daily Report
+            <MenuBookOutlinedIcon fontSize='large'/>
+          </li>
+        </Link>
+        <Link to="/dashboard/analytics" onClick={toggleSidebar}>
+          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl">
+            Analytics
+            <InsertChartOutlinedRoundedIcon fontSize='large'/> 
+          </li>
+        </Link>
+        <Link to="/dashboard/attendants" onClick={toggleSidebar}>
+          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl">
+            Attendants
+            <GroupsOutlinedIcon fontSize='large'/>
+          </li>
+        </Link>
+        <Link to="/dashboard/profile" onClick={toggleSidebar}>
+          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl">
+            Profile
+            <AccountCircleOutlinedIcon fontSize='large'/>
+          </li>
+        </Link>
+        <Link to="/dashboard/settings" onClick={toggleSidebar}>
+          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl">
+            Settings
+            <SettingsOutlinedIcon fontSize='large'/>
+          </li>
+        </Link>
+        <button className="" onClick={handleLogout}>
+          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl">
+            Logout
+            <LogoutOutlinedIcon fontSize='large'/>
+          </li>
+        </button>
       </ul>
     </div>
   );

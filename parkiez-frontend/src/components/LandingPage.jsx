@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ParkiezLogo from '../assets/parkiez_logo.png';
-import HeroImage from '../assets/hero_image.jpg';
+import HeroImage from '../assets/hero_image2.jpg';
 
 const Home = () => {
   return (
-    <div className="h-screen w-screen bg-gray-50">
+    <div className="h-screen w-full bg-gray-50">
       <header className="bg-white shadow">
         <div className="container mx-auto flex justify-between items-center p-5">
           <img src={ParkiezLogo} alt="Parkiez Logo" className="h-16" />
@@ -28,15 +28,15 @@ const Home = () => {
       </header>
 
       <section className="relative bg-green-600 text-white">
-        <img src={HeroImage} alt="Parking" className="absolute inset-0 object-cover w-full h-full opacity-50" />
+        <img src={HeroImage} alt="Parking" className="absolute inset-0 object-cover w-full h-full opacity-70" />
         <div className="container mx-auto flex flex-col justify-center items-center py-20 relative">
           <h1 className="text-5xl font-bold mb-5 ml-4">Welcome to Parkiez</h1>
           <p className="text-lg mb-10 ml-4">Your ultimate solution for hassle-free parking management.</p>
           <div className="flex space-x-5">
-            <Link to="/operatorlogin" className="bg-white text-green-600 px-5 py-3 rounded-full font-semibold hover:bg-gray-100 hover:shadow-md">
+            <Link to="/operatorlogin" className="bg-white text-green-600 px-5 py-3 rounded-full font-bold hover:bg-gray-100 hover:shadow-md">
               Operator Login
             </Link>
-            <Link to="/attendantlogin" className="bg-white text-green-600 px-5 py-3 rounded-full font-semibold hover:bg-gray-100 hover:shadow-md">
+            <Link to="/attendantlogin" className="bg-white text-green-600 px-5 py-3 rounded-full font-bold hover:bg-gray-100 hover:shadow-md">
               Attendent Login
             </Link>
             {/* <Link to="/signup" className="bg-white text-green-600 px-5 py-3 rounded-full font-semibold hover:bg-gray-100">Sign Up</Link> */}

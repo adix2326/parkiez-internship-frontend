@@ -11,12 +11,14 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex h-screen">
-      <Sidebar sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
-      <div className="flex-1 flex flex-col">
-        <Header toggleSidebar={toggleSidebar} />
-        <div className="flex-1 p-4 overflow-y-auto">
-          <Outlet />
+    <div className="h-screen flex flex-col relative">
+      <Header toggleSidebar={toggleSidebar} />
+      <div className=''>
+        <Sidebar sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+        <div className="flex-1 flex flex-col">
+          <div className="flex-1 p-4 overflow-y-auto">
+            <Outlet />
+          </div>
         </div>
       </div>
     </div>
