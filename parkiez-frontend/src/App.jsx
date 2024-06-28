@@ -5,7 +5,7 @@ import Dashboard from './components/OperatorDashboard';
 import OperatorLogin from './components/operatorlogin';
 import AttendantLogin from './components/attendantlogin';
 import DailyReport from './components/OperatorDailyReport';
-import Analytics from './components/Analytics';
+import Analytics from './components/OperatorAnalytics';
 import Attendants from './components/Attendants';
 
 function App() {
