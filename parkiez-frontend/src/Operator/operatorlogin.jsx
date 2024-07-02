@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import TextInput from './textinput';
+import TextInput from '../components/textinput';
 import ParkiezLogo from '../assets/parkiez_logo.png';
-import CustomBtn from './CustomBtn';
+import CustomBtn from '../components/CustomBtn';
 
 const OperatorLogin = () => {
   const navigate = useNavigate();

@@ -173,13 +173,20 @@ const Attendants = () => {
                   {row.cells.map((cell, cellIndex) => (
                     <td
                       {...cell.getCellProps()}
-                      className={`p-4 ${
-                        rowIndex === rows.length - 1
-                          ? cellIndex === 0
-                            ? "rounded-bl-lg"
-                            : cellIndex === row.cells.length - 1
-                            ? "rounded-br-lg"
-                            : ""
+                      className={`p-4 no-underline ${
+                        rowIndex === 0 && cellIndex === 0 ? "rounded-tl-lg" : ""
+                      } ${
+                        rowIndex === 0 && cellIndex === row.cells.length - 1
+                          ? "rounded-tr-lg"
+                          : ""
+                      } ${
+                        rowIndex === rows.length - 1 && cellIndex === 0
+                          ? "rounded-bl-lg"
+                          : ""
+                      } ${
+                        rowIndex === rows.length - 1 &&
+                        cellIndex === row.cells.length - 1
+                          ? "rounded-br-lg"
                           : ""
                       }`}
                     >

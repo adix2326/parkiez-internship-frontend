@@ -9,7 +9,7 @@ const TextInput = ({ type, label, placeholder, required, value, onChange }) => (
       required={required} 
       value={value} 
       onChange={onChange} 
-      className='p-2 pl-4 border rounded-lg bg-slate-50'
+      className='p-2 pl-4 border rounded-lg bg-slate-50 shadow-sm'
     />
   </div>
 );

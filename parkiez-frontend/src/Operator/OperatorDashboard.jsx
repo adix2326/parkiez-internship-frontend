@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import Header from './Header';
+import Header from '../components/DashboardHeader';
 import Sidebar from './OperatorSidebar';
 
 const Dashboard = () => {
