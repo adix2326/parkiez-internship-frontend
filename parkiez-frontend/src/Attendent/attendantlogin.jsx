@@ -4,43 +4,44 @@ import TextInput from '../components/textinput';
 import ParkiezLogo from '../assets/parkiez_logo.png';
 import CustomBtn from '../components/CustomBtn';
 
-const OperatorLogin = () => {
+const AttendantLogin = () => {
   const navigate = useNavigate();
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState(''); // You Amay remove this if not used
   const [otp, setOtp] = useState('');
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
 
   const handleSendOtp = () => {
     // Simulate sending OTP (in real implementation, call your API to send OTP)
-    if (phoneNumber === '9921892310') {
+    if (phoneNumber === '9921892310') { // Replace with your actual check for valid phone number
       alert('OTP sent to your phone number.');
       setIsOtpSent(true);
     } else {
-      alert('Invalid phone number or password.');
+      alert('Invalid phone number or password.'); // Handle invalid phone number or password
     }
   };
 
   const handleVerifyOtp = () => {
     // Simulate verifying OTP (in real implementation, call your API to verify OTP)
-    if (otp === '123456') {
+    if (otp === '123456') { // Replace with your actual OTP verification logic
       setOtpVerified(true);
       alert('OTP verified successfully.');
+      navigate('/attendantdashboard'); // Navigate to Attendant Dashboard upon successful verification
     } else {
-      alert('Invalid OTP.');
-    }
+      alert('Invalid OTP.'); // Handle invalid OTP
+    }    
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // Simulate authentication logic
     if (otpVerified) {
-      navigate('/dashboard');
+      navigate('/attendantdashboard'); // Navigate to Attendant Dashboard if OTP is already verified
     } else if (isOtpSent) {
-      handleVerifyOtp();
+      handleVerifyOtp(); // Verify OTP if OTP is already sent
     } else {
-      handleSendOtp();
+      handleSendOtp(); // Send OTP if OTP is not sent yet
     }
   };
 
@@ -78,4 +79,4 @@ const OperatorLogin = () => {
   );
 };
 
-export default OperatorLogin;
+export default AttendantLogin;
