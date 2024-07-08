@@ -36,7 +36,7 @@ const OperatorLogin = () => {
     e.preventDefault();
     // Simulate authentication logic
     if (otpVerified) {
-      navigate('/dashboard');
+      navigate('/operatordashboard');
     } else if (isOtpSent) {
       handleVerifyOtp();
     } else {

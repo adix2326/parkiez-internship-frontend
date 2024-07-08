@@ -1,23 +1,28 @@
-import React, { useState } from "react";
-import TextInput from "./textinput"; 
+import { useState } from "react";
+import TextInput from "../components/textinput"; 
 import ParkiezLogo from '../assets/parkiez_logo.png';
-import authService from "../services/authservice";
+import { useNavigate } from "react-router-dom";
+import authService from "../services/auth.service";
 
-const SignIn = () => {
+const SignIn1 = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const handleSignIn = async (e) => {
     e.preventDefault();
     setError(null);
     try {
       const response = await authService.login(username, password);
-      console.log(response.data);
-      // Save the JWT token or handle the response as needed
-      // Navigate to another page or show a success message
-    } catch (err) {
-      setError("Invalid username or password");
+      let role = response.roles[0];
+      if (role === 'ROLE_ADMIN') {
+        navigate('/admindashboard');  
+      } else {
+        setError("Invalid Role");
+      }
+    } catch (error) {
+      setError("Invalid Credentials");
     }
   };
 
@@ -55,4 +60,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignIn1;

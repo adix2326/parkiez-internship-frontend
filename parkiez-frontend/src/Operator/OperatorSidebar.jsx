@@ -20,31 +20,31 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
         ✕
       </button>
       <ul className="absolute top-20 grid grid-col p-5 text-green-500 gap-5 text-2xl font-semibold w-full">
-        <Link to="/dashboard/daily-report" onClick={toggleSidebar}>
+        <Link to="/operatordashboard/daily-report" onClick={toggleSidebar}>
           <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl">
             Daily Report
             <MenuBookOutlinedIcon fontSize='large'/>
           </li>
         </Link>
-        <Link to="/dashboard/analytics" onClick={toggleSidebar}>
+        <Link to="/operatordashboard/analytics" onClick={toggleSidebar}>
           <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl">
             Analytics
             <InsertChartOutlinedRoundedIcon fontSize='large'/> 
           </li>
         </Link>
-        <Link to="/dashboard/attendants" onClick={toggleSidebar}>
+        <Link to="/operatordashboard/attendants" onClick={toggleSidebar}>
           <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl">
             Attendants
             <GroupsOutlinedIcon fontSize='large'/>
           </li>
         </Link>
-        <Link to="/dashboard/profile" onClick={toggleSidebar}>
+        <Link to="/operatordashboard/profile" onClick={toggleSidebar}>
           <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl">
             Profile
             <AccountCircleOutlinedIcon fontSize='large'/>
           </li>
         </Link>
-        <Link to="/dashboard/settings" onClick={toggleSidebar}>
+        <Link to="/operatordashboard/settings" onClick={toggleSidebar}>
           <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl">
             Settings
             <SettingsOutlinedIcon fontSize='large'/>
