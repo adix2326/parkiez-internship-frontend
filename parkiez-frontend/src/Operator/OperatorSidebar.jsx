@@ -6,6 +6,7 @@ import InsertChartOutlinedRoundedIcon from '@mui/icons-material/InsertChartOutli
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import AddIcon from '@mui/icons-material/Add';
 
 const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
         <Link to="/operatordashboard/analytics" onClick={toggleSidebar}>
           <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl">
             Analytics
-            <InsertChartOutlinedRoundedIcon fontSize='large'/> 
+            <InsertChartOutlinedRoundedIcon fontSize='large'/>
           </li>
         </Link>
         <Link to="/operatordashboard/attendants" onClick={toggleSidebar}>

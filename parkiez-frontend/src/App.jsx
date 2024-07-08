@@ -51,6 +51,8 @@ function App() {
           <Route path="daily-report" element={<DailyReport />} />
           <Route path="analytics" element={<Analytics />} />
           <Route path="attendants" element={<Attendants />} />
+          <Route path="add-attendant" element={<AddAttendant />} />
+          <Route path="add-parking-area" element={<AddParkingArea />} /> {/* New Route */}
         </Route>
 
         <Route
