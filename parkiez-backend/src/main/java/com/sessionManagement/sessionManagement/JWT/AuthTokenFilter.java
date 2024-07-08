@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 public class AuthTokenFilter extends OncePerRequestFilter
@@ -37,9 +38,10 @@ public class AuthTokenFilter extends OncePerRequestFilter
         try
         {
             String jwt = parseJwt(request);
+//            System.out.println("jwt from tokenFilter: "+jwt);
             if (jwt != null && JWTUtils.validateJwtToken(jwt)) {
                 String username = JWTUtils.getUserNameFromJwtToken(jwt);
-
+//                System.out.println("username: "+username);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
@@ -58,8 +60,18 @@ public class AuthTokenFilter extends OncePerRequestFilter
     }
 
 
-    private String parseJwt(HttpServletRequest request)
-    {
-        return JWTUtils.getJwtFromCookies(request);
+    private String parseJwt(HttpServletRequest request) {
+        String headerAuth = request.getHeader("Authorization");
+//        System.out.println("print from parseJWT: "+ request);
+//        System.out.println("print headerAuth from parseJWT: "+headerAuth);
+        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
+            return headerAuth.substring(7, headerAuth.length());
+        }
+
+        return null;
     }
+//    private String parseJwt(HttpServletRequest request)
+//    {
+//        return JWTUtils.getJwtFromCookies(request);
+//    }
 }

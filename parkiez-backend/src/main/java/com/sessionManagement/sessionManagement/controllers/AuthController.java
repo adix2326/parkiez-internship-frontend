@@ -1,6 +1,7 @@
 package com.sessionManagement.sessionManagement.controllers;
 
 import com.sessionManagement.sessionManagement.JWT.JWTUtils;
+import com.sessionManagement.sessionManagement.Payload.JwtResponse;
 import com.sessionManagement.sessionManagement.Payload.LoginRequest;
 import com.sessionManagement.sessionManagement.Payload.AdminSignUpRequest;
 import com.sessionManagement.sessionManagement.Payload.MessageResponse;
@@ -30,14 +31,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin(origins = "http://172.16.1.114:5173")
 @RequestMapping("/api/auth")
+@CrossOrigin( origins = "http://localhost:5173/")
 
 /*
 
 1)api/auth/signin (using username and password as JSON payload)
 2)adminsignup (using JSON payload, use role as:)
  "roles" : ["admin"]
+
 */
 public class AuthController
 {
@@ -67,16 +69,17 @@ public class AuthController
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
 
-        ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
+        String jwt = jwtUtils.generateJwtToken(authentication);
+//        ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
 
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-                .body(new AdminUserInfoResponse(userDetails.getId(),
-                                                userDetails.getUsername(),
-                                                roles));
+        return ResponseEntity.ok(new AdminUserInfoResponse( jwt,
+                                                            userDetails.getId(),
+                                                            userDetails.getUsername(),
+                                                            roles));
 
     }
 

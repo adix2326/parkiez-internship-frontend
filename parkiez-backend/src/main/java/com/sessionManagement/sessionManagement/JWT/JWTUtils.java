@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.WebUtils;
 
@@ -33,32 +34,45 @@ public class JWTUtils
     @Value("${parkiez.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
-    @Value("${parkiez.app.jwtCookieName}")
-    private String jwtCookie;
+//    @Value("${parkiez.app.jwtCookieName}")
+//    private String jwtCookie;
 
-    public String getJwtFromCookies
-            (HttpServletRequest request) {
-        Cookie cookie = WebUtils.getCookie(request, jwtCookie);
+//    public String getJwtFromCookies
+//            (HttpServletRequest request) {
+//        System.out.println("request from getJWTFrm cookie: "+request);
+//        Cookie cookie = WebUtils.getCookie(request, jwtCookie);
+//        System.out.println("cookie: "+cookie);
+//        if (cookie != null) {
+//            return cookie.getValue();
+//        } else {
+//            return null;
+//        }
+//    }
 
-        if (cookie != null) {
-            return cookie.getValue();
-        } else {
-            return null;
-        }
+//    public ResponseCookie generateJwtCookie
+//            (UserDetailsImpl userPrincipal)
+//    {
+//        String jwt = generateTokenFromUsername(userPrincipal.getUsername());
+//        ResponseCookie cookie = ResponseCookie.from(jwtCookie, jwt).path("/api").maxAge(24 * 60 * 60).httpOnly(true).build();
+//        return cookie;
+//    }
+
+    public String generateJwtToken(Authentication authentication) {
+
+        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+
+        return Jwts.builder()
+                .setSubject((userPrincipal.getUsername()))
+                .setIssuedAt(new Date())
+                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .signWith(key(), SignatureAlgorithm.HS256)
+                .compact();
     }
 
-    public ResponseCookie generateJwtCookie
-            (UserDetailsImpl userPrincipal)
-    {
-        String jwt = generateTokenFromUsername(userPrincipal.getUsername());
-        ResponseCookie cookie = ResponseCookie.from(jwtCookie, jwt).path("/api").maxAge(24 * 60 * 60).httpOnly(true).build();
-        return cookie;
-    }
-
-    public ResponseCookie getCleanJwtCookie() {
-        ResponseCookie cookie = ResponseCookie.from(jwtCookie, null).path("/api").build();
-        return cookie;
-    }
+//    public ResponseCookie getCleanJwtCookie() {
+//        ResponseCookie cookie = ResponseCookie.from(jwtCookie, null).path("/api").build();
+//        return cookie;
+//    }
 
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parserBuilder().setSigningKey(key()).build()
@@ -72,6 +86,7 @@ public class JWTUtils
 
     public boolean validateJwtToken(String authToken) {
         try {
+//            System.out.println("trying string: "+authToken);
             Jwts.parserBuilder().setSigningKey(key()).build().parse(authToken);
             return true;
         } catch (MalformedJwtException e) {

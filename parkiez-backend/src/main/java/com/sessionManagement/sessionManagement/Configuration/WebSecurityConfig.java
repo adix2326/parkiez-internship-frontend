@@ -17,6 +17,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableMethodSecurity
@@ -33,6 +36,16 @@ public class WebSecurityConfig
     {
         return new AuthTokenFilter();
     }
+
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**")
+////        @CrossOrigin( origins = "http://localhost:5173/")
+//                .allowedOrigins("http://localhost:5173/") // Replace with your React app's URL
+//                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+//                .allowedHeaders("*")
+//                .allowCredentials(true);
+//    }
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider()
@@ -69,7 +82,7 @@ public class WebSecurityConfig
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/**").permitAll()
-//                                .requestMatchers("/api/test/**").permitAll()
+                                .requestMatchers("/api/admin/**").permitAll()
                                 .anyRequest().authenticated()
                 );
 
