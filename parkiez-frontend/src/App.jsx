@@ -15,7 +15,7 @@ import Attendants from './Operator/Attendants';
 import AttendantDashboard from './Attendent/AttendantDashboard';
 import MakeEntry from './Attendent/MakeEntry';
 import MakeExit from './Attendent/MakeExit';
-/* Admin */
+/* Admin  */
 import AdminDashboard from './Admin/AdminDashboard_original';
 
 function App() {
