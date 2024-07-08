@@ -31,8 +31,6 @@ import java.util.*;
 addOperator
 currentAdmin
 forAdmin
-
-
 */
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController
