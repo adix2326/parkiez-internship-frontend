@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/operator")
+@RequestMapping("/api/operator")
 @PreAuthorize("hasRole('ROLE_OPERATOR')")
 public class OperatorController
 {

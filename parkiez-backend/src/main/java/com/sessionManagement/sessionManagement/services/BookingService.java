@@ -18,7 +18,7 @@ public class BookingService
         LocalDateTime startOfDay = LocalDateTime.now().with(LocalTime.MIN);
         LocalDateTime endOfDay = LocalDateTime.now().with(LocalTime.MAX);
 
-        List<Booking> bookings = bookingRepo.findBookingsByParkingIdAndDateRange(parkingId, startOfDay, endOfDay);
+        List<Booking> bookings = bookingRepo.find4WheelerBookingsByParkingIdAndDateRange(parkingId, startOfDay, endOfDay);
 
         return bookings.size();
     }
@@ -26,7 +26,7 @@ public class BookingService
         LocalDateTime startOfDay = LocalDateTime.now().with(LocalTime.MIN);
         LocalDateTime endOfDay = LocalDateTime.now().with(LocalTime.MAX);
 
-        List<Booking> bookings = bookingRepo.findBookingsByParkingIdAndDateRange(parkingId, startOfDay, endOfDay);
+        List<Booking> bookings = bookingRepo.find2WheelerBookingsByParkingIdAndDateRange(parkingId, startOfDay, endOfDay);
 
         return bookings.size();
     }

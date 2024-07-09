@@ -18,19 +18,15 @@ public class Operators
     private String name;
 
     @NotBlank
-    private String parkingId;
-
-    @NotBlank
     private String phoneNo;
 
     @NotBlank
     private String password;
 
-//    @DBRef
+    //    @DBRef
     private Set<Role> roles = new HashSet<>();
-    public Operators(String name, String parkingId, String phoneNo, String password) {
+    public Operators(String name, String phoneNo, String password) {
         this.name = name;
-        this.parkingId = parkingId;
         this.phoneNo = phoneNo;
         this.password = password;
     }
@@ -49,14 +45,6 @@ public class Operators
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getParkingId() {
-        return parkingId;
-    }
-
-    public void setParkingId(String parkingId) {
-        this.parkingId = parkingId;
     }
 
     public String getPhoneNo() {
@@ -88,7 +76,6 @@ public class Operators
         return "Operators{" +
                 "operatorId='" + operatorId + '\'' +
                 ", name='" + name + '\'' +
-                ", parkingId='" + parkingId + '\'' +
                 ", phoneNo='" + phoneNo + '\'' +
                 ", password='" + password + '\'' +
                 ", roles=" + roles +

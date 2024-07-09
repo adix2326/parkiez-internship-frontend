@@ -14,12 +14,16 @@ public class Booking
 
     private String parkingId;
     private String paymentType;
+    private LocalDateTime inTime;
+    private LocalDateTime outTime;
+    private String vehicleNo;
+    private String phoneNo;
+    private String transactionId;
+    private String attendantPhoneNo;
 
-    public Booking(String bookingId, String parkingId, String paymentType, String vheicleType, LocalDateTime inTime, LocalDateTime outTime, String vehicleNo, String phoneNo, String transactionId, String attendantPhoneNo) {
-        this.bookingId = bookingId;
+    public Booking(String parkingId, String paymentType, LocalDateTime inTime, LocalDateTime outTime, String vehicleNo, String phoneNo, String transactionId, String attendantPhoneNo) {
         this.parkingId = parkingId;
         this.paymentType = paymentType;
-        this.vheicleType = vheicleType;
         this.inTime = inTime;
         this.outTime = outTime;
         this.vehicleNo = vehicleNo;
@@ -27,14 +31,6 @@ public class Booking
         this.transactionId = transactionId;
         this.attendantPhoneNo = attendantPhoneNo;
     }
-
-    private String vheicleType;
-
-    private LocalDateTime inTime;
-    private LocalDateTime outTime;
-    private String vehicleNo;
-    private String phoneNo;
-    private String transactionId;
 
     public String getBookingId() {
         return bookingId;
@@ -58,14 +54,6 @@ public class Booking
 
     public void setPaymentType(String paymentType) {
         this.paymentType = paymentType;
-    }
-
-    public String getVheicleType() {
-        return vheicleType;
-    }
-
-    public void setVheicleType(String vheicleType) {
-        this.vheicleType = vheicleType;
     }
 
     public LocalDateTime getInTime() {
@@ -116,8 +104,19 @@ public class Booking
         this.attendantPhoneNo = attendantPhoneNo;
     }
 
-    private String attendantPhoneNo;
+    public LocalDate getInDate()
+    {
+        return inTime.toLocalDate();
+    }
 
+    public LocalDate getOutDate()
+    {
+        return outTime.toLocalDate();
+    }
 
+//    public LocalTime getInTime()
+//    {
+//        return inTime.toLocalTime();
+//    }
 
 }

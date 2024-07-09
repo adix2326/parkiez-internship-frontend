@@ -26,11 +26,13 @@ import java.util.*;
 
 @RestController
 @RequestMapping("api/admin")
-@CrossOrigin( origins = "http://localhost:5173/")
+@CrossOrigin( origins = "http://localhost:5173/", allowCredentials = "true")
 /* api/admin/addParking
 addOperator
 currentAdmin
 forAdmin
+
+
 */
 @PreAuthorize("hasRole('ADMIN')")
 public class AdminController
@@ -91,9 +93,9 @@ public class AdminController
         ) {
             return ResponseEntity.badRequest().body("Operator already exists");
         }
-        if (!parkingRepo.existsById(operator.getParkingId())) {
-            return ResponseEntity.badRequest().body("No such parking with parking ID exists, first create the parking");
-        }
+//        if (!parkingRepo.existsById(operator.getParkingId())) {
+//            return ResponseEntity.badRequest().body("No such parking with parking ID exists, first create the parking");
+//        }
         Set<Role> roles = new HashSet<>();
         Role adminRole = roleRepo.findByName(ERole.ROLE_OPERATOR)
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found"));
