@@ -3,6 +3,7 @@ package com.sessionManagement.sessionManagement.controllers;
 
 import com.sessionManagement.sessionManagement.documents.*;
 import com.sessionManagement.sessionManagement.repo.*;
+import com.sessionManagement.sessionManagement.services.BookingService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,8 @@ import java.util.Set;
 @PreAuthorize("hasRole('ROLE_OPERATOR')")
 public class OperatorController
 {
+    private BookingService bookingService;
+
     @Autowired
     OperatorRepo operatorRepo;
 
@@ -121,5 +124,14 @@ public class OperatorController
 
         long totalParkedTwoWheelers = bookingRepo.countParkedTwoWheelers(booking.getParkingId());
         return ResponseEntity.ok(totalParkedTwoWheelers);
+    }
+
+    @GetMapping("/countFourWheelerToday")
+    public long countFourWheelerBookingsToday(@RequestParam String parkingId) {
+        return bookingService.countFourWheelerBookingsToday(parkingId);
+    }
+    @GetMapping("/countTwoWheelerToday")
+    public long countTwoWheelerBookingsToday(@RequestParam String parkingId) {
+        return bookingService.countTwoWheelerBookingsToday(parkingId);
     }
 }
