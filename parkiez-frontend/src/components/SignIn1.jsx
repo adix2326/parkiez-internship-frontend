@@ -18,6 +18,8 @@ const SignIn1 = () => {
       let role = response.roles[0];
       if (role === 'ROLE_ADMIN') {
         navigate('/admindashboard');  
+      } else if (role === 'ROLE_OPERATOR') {
+        navigate('/operatordashboard');  
       } else {
         setError("Invalid Role");
       }

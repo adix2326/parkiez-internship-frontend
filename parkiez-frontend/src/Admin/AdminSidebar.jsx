@@ -7,12 +7,13 @@ import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
+import authService from "../services/auth.service";
 
 const Sidebar = ({ sidebarOpen, toggleSidebar, onAddOperatorClick }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    auth.service.logout();
+    authService.logout();
     navigate("/");
   };
 
@@ -59,12 +60,7 @@ const Sidebar = ({ sidebarOpen, toggleSidebar, onAddOperatorClick }) => {
             <PersonAddOutlinedIcon fontSize="large" />
           </li>
         </Link>
-        <Link to="/admindashboard/profile" onClick={toggleSidebar}>
-          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl hover:scale-95 hover:bg-green-300 hover:text-white duration-300">
-            Profile
-            <AccountCircleOutlinedIcon fontSize="large" />
-          </li>
-        </Link>
+        <button onClick={handleLogout} className="bg-white text-green-500" >Logout</button>
       </ul>
     </div>
   );

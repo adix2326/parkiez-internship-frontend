@@ -13,9 +13,8 @@ const AdminDashboard = () => {
   const [operatorData, setOperatorData] = useState({
     operatorId: "",
     name: "",
-    phone: "",
+    phoneNo: "",
     password: "",
-    parkingId: "",
   });
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -27,12 +26,12 @@ const AdminDashboard = () => {
     const fetchUser = async () => {
       const userFromStorage = authService.getCurrentUserFromStorage();
       if (!userFromStorage) {
-        setRedirect("/operatorlogin");
+        setRedirect("/");
         return;
       }
       const currentUser = await authService.getCurrentUser();
       if (!currentUser) {
-        setRedirect("/operatorlogin");
+        setRedirect("/");
       } else {
         setCurrentUser(currentUser);
         setUserReady(true);
@@ -52,6 +51,7 @@ const AdminDashboard = () => {
     setSuccess(null);
     try {
       await addOperator(operatorData);
+      console.log(operatorData);
       setSuccess("Operator added successfully");
     } catch (error) {
       setError("Failed to add operator: " + (error.response?.data || error.message));
@@ -127,8 +127,8 @@ const AdminDashboard = () => {
                   label="Phone Number"
                   placeholder="Enter operator phone number"
                   required
-                  value={operatorData.phone}
-                  name="phone"
+                  value={operatorData.phoneNo}
+                  name="phoneNo"
                   onChange={handleOperatorChange}
                 />
                 <TextInput
@@ -140,7 +140,7 @@ const AdminDashboard = () => {
                   name="password"
                   onChange={handleOperatorChange}
                 />
-                <TextInput
+                {/* <TextInput
                   type="text"
                   label="Parking ID"
                   placeholder="Enter parking ID"
@@ -148,7 +148,7 @@ const AdminDashboard = () => {
                   value={operatorData.parkingId}
                   name="parkingId"
                   onChange={handleOperatorChange}
-                />
+                /> */}
                 <CustomBtn
                   text="Add Operator"
                   type="submit"
