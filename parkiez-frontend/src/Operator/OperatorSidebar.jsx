@@ -4,9 +4,8 @@ import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import InsertChartOutlinedRoundedIcon from '@mui/icons-material/InsertChartOutlinedRounded';
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import AddIcon from '@mui/icons-material/Add';
+import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
 const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
   const navigate = useNavigate();
@@ -22,41 +21,35 @@ const Sidebar = ({ sidebarOpen, toggleSidebar }) => {
       </button>
       <ul className="absolute top-20 grid grid-col p-5 text-green-500 gap-5 text-2xl font-semibold w-full">
         <Link to="/operatordashboard/daily-report" onClick={toggleSidebar}>
-          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl">
+          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl hover:scale-95 hover:bg-green-300 hover:text-white duration-300">
             Daily Report
             <MenuBookOutlinedIcon fontSize='large'/>
           </li>
         </Link>
         <Link to="/operatordashboard/analytics" onClick={toggleSidebar}>
-          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl">
+          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl hover:scale-95 hover:bg-green-300 hover:text-white duration-300">
             Analytics
             <InsertChartOutlinedRoundedIcon fontSize='large'/>
           </li>
         </Link>
         <Link to="/operatordashboard/attendants" onClick={toggleSidebar}>
-          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl">
+          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl hover:scale-95 hover:bg-green-300 hover:text-white duration-300">
             Attendants
             <GroupsOutlinedIcon fontSize='large'/>
           </li>
         </Link>
-        <Link to="/operatordashboard/profile" onClick={toggleSidebar}>
-          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl">
-            Profile
-            <AccountCircleOutlinedIcon fontSize='large'/>
+        <Link to="/operatordashboard/add-attendant" onClick={toggleSidebar}>
+          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl hover:scale-95 hover:bg-green-300 hover:text-white duration-300">
+            Add Attendent
+            <PersonAddOutlinedIcon fontSize='large'/>
           </li>
         </Link>
-        <Link to="/operatordashboard/settings" onClick={toggleSidebar}>
-          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl">
-            Settings
-            <SettingsOutlinedIcon fontSize='large'/>
+        <Link to="/operatordashboard/add-parking" onClick={toggleSidebar}>
+          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl hover:scale-95 hover:bg-green-300 hover:text-white duration-300">
+            Add Parking
+            <AddOutlinedIcon fontSize='large'/>
           </li>
-        </Link>
-        <button className="" onClick={handleLogout}>
-          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl">
-            Logout
-            <LogoutOutlinedIcon fontSize='large'/>
-          </li>
-        </button>
+        </Link>        
       </ul>
     </div>
   );

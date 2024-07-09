@@ -9,11 +9,11 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
 
 const Sidebar = ({ sidebarOpen, toggleSidebar, onAddOperatorClick }) => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     auth.service.logout();
-    return <Navigate to={"/"} />;
+    navigate("/");
   };
 
   return (
@@ -30,19 +30,19 @@ const Sidebar = ({ sidebarOpen, toggleSidebar, onAddOperatorClick }) => {
       </button>
       <ul className="absolute top-10 grid grid-col p-5 text-green-500 gap-5 text-2xl font-semibold w-full">
         <Link to="/admindashboard/daily-report" onClick={toggleSidebar}>
-          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl">
+          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl hover:scale-95 hover:bg-green-300 hover:text-white duration-300">
             Daily Report
             <MenuBookOutlinedIcon fontSize="large" />
           </li>
         </Link>
         <Link to="/admindashboard/analytics" onClick={toggleSidebar}>
-          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl">
+          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl hover:scale-95 hover:bg-green-300 hover:text-white duration-300">
             Analytics
             <InsertChartOutlinedRoundedIcon fontSize="large" />
           </li>
         </Link>
         <Link to="/admindashboard/attendants" onClick={toggleSidebar}>
-          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl">
+          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl hover:scale-95 hover:bg-green-300 hover:text-white duration-300">
             Attendants
             <GroupsOutlinedIcon fontSize="large" />
           </li>
@@ -54,29 +54,17 @@ const Sidebar = ({ sidebarOpen, toggleSidebar, onAddOperatorClick }) => {
             onAddOperatorClick();
           }}
         >
-          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl">
+          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl hover:scale-95 hover:bg-green-300 hover:text-white duration-300">
             Add Operator
             <PersonAddOutlinedIcon fontSize="large" />
           </li>
         </Link>
         <Link to="/admindashboard/profile" onClick={toggleSidebar}>
-          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl">
+          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl hover:scale-95 hover:bg-green-300 hover:text-white duration-300">
             Profile
             <AccountCircleOutlinedIcon fontSize="large" />
           </li>
         </Link>
-        <Link to="/admindashboard/settings" onClick={toggleSidebar}>
-          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl">
-            Settings
-            <SettingsOutlinedIcon fontSize="large" />
-          </li>
-        </Link>
-        <button className="" onClick={handleLogout}>
-          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl">
-            Logout
-            <LogoutOutlinedIcon fontSize="large" />
-          </li>
-        </button>
       </ul>
     </div>
   );

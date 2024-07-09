@@ -11,6 +11,8 @@ import OperatorDashboard from './Operator/OperatorDashboard';
 import DailyReport from './Operator/OperatorDailyReport';
 import Analytics from './Operator/OperatorAnalytics';
 import Attendants from './Operator/Attendants';
+import AddAttendant from './Operator/AddAttendant'
+import AddParking from './Operator/AddParking'
 /* Attendant */
 import AttendantDashboard from './Attendent/AttendantDashboard';
 import MakeEntry from './Attendent/MakeEntry';
@@ -52,7 +54,7 @@ function App() {
           <Route path="analytics" element={<Analytics />} />
           <Route path="attendants" element={<Attendants />} />
           <Route path="add-attendant" element={<AddAttendant />} />
-          <Route path="add-parking-area" element={<AddParkingArea />} /> {/* New Route */}
+          <Route path="add-parking" element={<AddParking />} />
         </Route>
 
         <Route
