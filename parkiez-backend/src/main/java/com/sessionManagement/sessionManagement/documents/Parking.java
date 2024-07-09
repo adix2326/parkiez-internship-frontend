@@ -9,6 +9,8 @@ public class Parking
     @Id
     private String Id;
 
+    private String operatorId;
+
     private String parkingId;
     private String title;
     private String costingType;
@@ -17,7 +19,7 @@ public class Parking
     private int cost4wheeler;
     private long latitude;
     private long longitude;
-    private String availability;
+    private boolean availability;
     private int capacity2wheeler;
     private int capacity4wheeler;
     private int remaining2wheeler;
@@ -25,10 +27,9 @@ public class Parking
     private String address;
     private String pinCode;
 
-    public Parking() {
-    }
-
-    public Parking(String parkingId, String title, String costingType, String description, int cost2wheeler, int cost4wheeler, long latitude, long longitude, String availability, int capacity2wheeler, int capacity4wheeler, int remaining2wheeler, int remaining4wheeler, String address, String pinCode) {
+    public Parking(String id, String operatorId, String parkingId, String title, String costingType, String description, int cost2wheeler, int cost4wheeler, long latitude, long longitude, boolean availability, int capacity2wheeler, int capacity4wheeler, int remaining2wheeler, int remaining4wheeler, String address, String pinCode) {
+        Id = id;
+        this.operatorId = operatorId;
         this.parkingId = parkingId;
         this.title = title;
         this.costingType = costingType;
@@ -40,8 +41,8 @@ public class Parking
         this.availability = availability;
         this.capacity2wheeler = capacity2wheeler;
         this.capacity4wheeler = capacity4wheeler;
-        this.remaining2wheeler = remaining2wheeler;
-        this.remaining4wheeler = remaining4wheeler;
+        this.remaining2wheeler = capacity2wheeler;
+        this.remaining4wheeler = capacity4wheeler;
         this.address = address;
         this.pinCode = pinCode;
     }
@@ -52,6 +53,14 @@ public class Parking
 
     public void setId(String id) {
         Id = id;
+    }
+
+    public String getOperatorId() {
+        return operatorId;
+    }
+
+    public void setOperatorId(String operatorId) {
+        this.operatorId = operatorId;
     }
 
     public String getParkingId() {
@@ -118,11 +127,11 @@ public class Parking
         this.longitude = longitude;
     }
 
-    public String getAvailability() {
+    public boolean isAvailability() {
         return availability;
     }
 
-    public void setAvailability(String availability) {
+    public void setAvailability(boolean availability) {
         this.availability = availability;
     }
 
@@ -173,4 +182,9 @@ public class Parking
     public void setPinCode(String pinCode) {
         this.pinCode = pinCode;
     }
+
+    public Parking() {
+    }
+
+
 }
