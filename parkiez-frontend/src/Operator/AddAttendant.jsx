@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import TextInput from "../components/textinput";
+import CustomBtn from "../components/CustomBtn";
 
 const AddAttendant = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +11,8 @@ const AddAttendant = () => {
   });
 
   const [parkingAreas, setParkingAreas] = useState([]);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   useEffect(() => {
     // Fetch parking areas from your API or data source
@@ -30,38 +34,56 @@ const AddAttendant = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Logic to add attendant
-    console.log(formData);
+    setError(null);
+    setSuccess(null);
+    try {
+      // Placeholder for the logic to add an attendant
+      // Replace with your actual API call logic
+      const response = await fetch('/api/add-attendant', { // Replace with your API endpoint
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to add attendant');
+      }
+
+      console.log(formData);
+      setSuccess("Attendant added successfully");
+    } catch (error) {
+      setError("Failed to add attendant: " + (error.response?.data || error.message));
+    }
   };
 
   return (
-    <div className="p-4">
-      <h2 className="text-3xl mb-4 font-bold">Add Attendant</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label className="block mb-2 font-semibold">Name</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="p-2 border border-gray-300 rounded w-full"
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block mb-2 font-semibold">Phone Number</label>
-          <input
-            type="text"
-            name="phoneNumber"
-            value={formData.phoneNumber}
-            onChange={handleChange}
-            className="p-2 border border-gray-300 rounded w-full"
-            required
-          />
-        </div>
+    <div className="p-5">
+      <h2 className="text-2xl font-bold mb-6">Add Attendant</h2>
+      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md">
+        {error && <div className="text-red-500 mb-4">{error}</div>}
+        {success && <div className="text-green-500 mb-4">{success}</div>}
+        <TextInput
+          type="text"
+          label="Name"
+          placeholder="Enter attendant name"
+          required
+          value={formData.name}
+          name="name"
+          onChange={handleChange}
+        />
+        <TextInput
+          type="text"
+          label="Phone Number"
+          placeholder="Enter attendant phone number"
+          required
+          value={formData.phoneNumber}
+          name="phoneNumber"
+          onChange={handleChange}
+        />
         <div className="mb-4">
           <label className="block mb-2 font-semibold">Parking Area</label>
           <select
@@ -91,9 +113,12 @@ const AddAttendant = () => {
             <option value="Inactive">Inactive</option>
           </select>
         </div>
-        <button type="submit" className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
-          Add Attendant
-        </button>
+        <CustomBtn
+          text="Add Attendant"
+          type="submit"
+          textcolor="white"
+          onClick={handleSubmit}
+        />
       </form>
     </div>
   );

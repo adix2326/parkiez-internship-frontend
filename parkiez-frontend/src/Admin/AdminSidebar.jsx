@@ -1,21 +1,11 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import MenuBookOutlinedIcon from "@mui/icons-material/MenuBookOutlined";
-import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import InsertChartOutlinedRoundedIcon from "@mui/icons-material/InsertChartOutlinedRounded";
 import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
-import authService from "../services/auth.service";
 
 const Sidebar = ({ sidebarOpen, toggleSidebar, onAddOperatorClick }) => {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    authService.logout();
-    navigate("/");
-  };
 
   return (
     <div
@@ -60,7 +50,6 @@ const Sidebar = ({ sidebarOpen, toggleSidebar, onAddOperatorClick }) => {
             <PersonAddOutlinedIcon fontSize="large" />
           </li>
         </Link>
-        <button onClick={handleLogout} className="bg-white text-green-500" >Logout</button>
       </ul>
     </div>
   );

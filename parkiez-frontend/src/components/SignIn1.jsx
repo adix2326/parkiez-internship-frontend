@@ -1,7 +1,8 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import TextInput from "../components/textinput"; 
 import ParkiezLogo from '../assets/parkiez_logo.png';
-import { useNavigate } from "react-router-dom";
 import authService from "../services/auth.service";
 
 const SignIn1 = () => {
@@ -17,14 +18,18 @@ const SignIn1 = () => {
       const response = await authService.login(username, password);
       let role = response.roles[0];
       if (role === 'ROLE_ADMIN') {
+        toast.success("Login successful!");
         navigate('/admindashboard');  
       } else if (role === 'ROLE_OPERATOR') {
+        toast.success("Login successful!");
         navigate('/operatordashboard');  
       } else {
         setError("Invalid Role");
+        toast.error("Invalid Role");
       }
     } catch (error) {
       setError("Invalid Credentials");
+      toast.error("Invalid Credentials");
     }
   };
 
