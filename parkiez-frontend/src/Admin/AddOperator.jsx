@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import TextInput from "../components/textinput";
 import CustomBtn from "../components/CustomBtn";
 import { addOperator } from "../services/operatorService";
+import { toast } from "react-toastify";
 
 const AddOperator = () => {
   const [operatorData, setOperatorData] = useState({
@@ -26,6 +27,7 @@ const AddOperator = () => {
       await addOperator(operatorData);
       console.log(operatorData);
       setSuccess("Operator added successfully");
+      toast.success(success);
     } catch (error) {
       setError("Failed to add operator: " + (error.response?.data || error.message));
     }
