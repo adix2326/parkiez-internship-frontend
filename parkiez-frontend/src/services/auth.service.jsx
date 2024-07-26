@@ -6,11 +6,9 @@ const user = JSON.parse(localStorage.getItem('user'));
 const token = user ? user.token : null;
 
 export const myAxios = axios.create({
-    baseURL: BASE_URL,
-    withCredentials: true,
-    headers: {
-      'Authorization': token ? `Bearer ${token}` : '',
-  },
+  baseURL: BASE_URL,
+  withCredentials: true,
+  headers: authHeader(),
 });
 
 const API_URL = BASE_URL + "/api/auth/";

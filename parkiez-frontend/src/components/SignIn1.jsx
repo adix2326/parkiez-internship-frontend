@@ -34,7 +34,7 @@ const SignIn1 = () => {
   };
 
   return (
-    <div className="sm:bg-green-400 w-full h-screen flex justify-center items-center">
+    <div className="sm:bg-slate-50 w-full h-screen flex justify-center items-center">
       <div className="bg-white p-10 w-full h-screen sm:h-max sm:w-96 rounded-3xl shadow-2xl mt-10 sm:mt-0">
         <img src={ParkiezLogo} alt="parkiez-logo" className='mx-auto mb-5' />
         <form className="flex flex-col gap-5" onSubmit={handleSignIn}>

@@ -58,21 +58,21 @@ public class AdminController
     @Autowired
     ParkingRepo parkingRepo;
 
-    @PostMapping("/addParking")
-    public ResponseEntity<?> addParking(@Valid @RequestBody Parking parking) {
-        if (parkingRepo.existsById(parking.getParkingId()) ||
-                parkingRepo.existsByTitle(parking.getTitle())
-        ) {
-            return ResponseEntity.badRequest().body("Parking with provided Name or/and Parking ID already exists");
-        }
-        Map<String, String> errors = getErrorsParking(parking);
-
-        if (!errors.isEmpty())
-            return ResponseEntity.badRequest().body(errors);
-        return ResponseEntity.ok(parkingRepo.save(parking));
-    }
-
-    private static Map<String, String> getErrorsParking(Parking parking) {
+//    @PostMapping("/addParking")
+//    public ResponseEntity<?> addParking(@Valid @RequestBody Parking parking) {
+//        if (parkingRepo.existsById(parking.getParkingId()) ||
+//                parkingRepo.existsByTitle(parking.getTitle())
+//        ) {
+//            return ResponseEntity.badRequest().body("Parking with provided Name or/and Parking ID already exists");
+//        }
+//        Map<String, String> errors = getErrorsParking(parking);
+//
+//        if (!errors.isEmpty())
+//            return ResponseEntity.badRequest().body(errors);
+//        return ResponseEntity.ok(parkingRepo.save(parking));
+//    }
+//
+    public static Map<String, String> getErrorsParking(Parking parking) {
         Map<String, String> errors = new HashMap<>();
         if (parking.getParkingId() == null || parking.getParkingId().isEmpty())
             errors.put("parkingId", "Parking ID is required");

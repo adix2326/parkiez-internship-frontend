@@ -16,8 +16,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static com.sessionManagement.sessionManagement.controllers.AdminController.getErrorsParking;
+
 @RestController
 @RequestMapping("/api/operator")
+@CrossOrigin( origins = "http://localhost:5173/", allowCredentials = "true")
 @PreAuthorize("hasRole('ROLE_OPERATOR')")
 public class OperatorController
 {
@@ -45,6 +48,20 @@ public class OperatorController
     public String forOperatorTest()
     {
         return "You have access(Operator's)";
+    }
+
+    @PostMapping("/addParking")
+    public ResponseEntity<?> addParking(@Valid @RequestBody Parking parking) {
+        if (parkingRepo.existsById(parking.getParkingId()) ||
+                parkingRepo.existsByTitle(parking.getTitle())
+        ) {
+            return ResponseEntity.badRequest().body("Parking with provided Name or/and Parking ID already exists");
+        }
+        Map<String, String> errors = getErrorsParking(parking);
+
+        if (!errors.isEmpty())
+            return ResponseEntity.badRequest().body(errors);
+        return ResponseEntity.ok(parkingRepo.save(parking));
     }
 
 
