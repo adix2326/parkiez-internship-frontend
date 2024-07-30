@@ -7,11 +7,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Parking
 {
     @Id
-    private String Id;
+    private String parkingId;
 
     private String operatorId;
 
-    private String parkingId;
     private String title;
     private String costingType;
     private String description;
@@ -27,10 +26,9 @@ public class Parking
     private String address;
     private String pinCode;
 
-    public Parking(String id, String operatorId, String parkingId, String title, String costingType, String description, int cost2wheeler, int cost4wheeler, long latitude, long longitude, boolean availability, int capacity2wheeler, int capacity4wheeler, int remaining2wheeler, int remaining4wheeler, String address, String pinCode) {
-        Id = id;
-        this.operatorId = operatorId;
+    public Parking(String parkingId, String operatorId, String title, String costingType, String description, int cost2wheeler, int cost4wheeler, long latitude, long longitude, boolean availability, int capacity2wheeler, int capacity4wheeler, int remaining2wheeler, int remaining4wheeler, String address, String pinCode) {
         this.parkingId = parkingId;
+        this.operatorId = operatorId;
         this.title = title;
         this.costingType = costingType;
         this.description = description;
@@ -45,14 +43,6 @@ public class Parking
         this.remaining4wheeler = capacity4wheeler;
         this.address = address;
         this.pinCode = pinCode;
-    }
-
-    public String getId() {
-        return Id;
-    }
-
-    public void setId(String id) {
-        Id = id;
     }
 
     public String getOperatorId() {

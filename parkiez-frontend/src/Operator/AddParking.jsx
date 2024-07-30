@@ -4,12 +4,11 @@ import TextInput from "../components/textinput";
 import CustomBtn from "../components/CustomBtn";
 import { toast } from "react-toastify";
 import {addParking} from '../services/addParkingService';
-import authService from '../services/auth.service';
 
 const AddParkingArea = () => {
   const [parkingData, setParkingData] = useState({
+    parkingId: "",
     opId: "",
-    id: "",
     title: "",
     costingType: "fixed",
     description: "",
@@ -25,21 +24,15 @@ const AddParkingArea = () => {
   });
 
   const [currentUser, setCurrentUser] = useState(null);
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
-      const userFromStorage = authService.getCurrentUserFromStorage();
-      if (!userFromStorage) {
-        navigate("/");
-        return;
-      }
-      const currentUser = userFromStorage;
+      const currentUser = JSON.parse(localStorage.getItem('user'));
       if (!currentUser) {
         navigate("/");
-      } else {
+        return;
+      }else {
         setCurrentUser(currentUser);
       }
     };
@@ -57,17 +50,14 @@ const AddParkingArea = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
-    setSuccess(null);
     try {
       parkingData.opId = currentUser.id;
       await addParking(parkingData);
-      console.log(parkingData);
-      setSuccess("Parking area added successfully");
-      toast.success("Parking area added successfully");
-      navigate("/dashboard");
+      // console.log(`Parking data : ${parkingData}`);
+      toast.success("Parking Added Successfully");
+      navigate("/operatordashboard");
     } catch (error) {
-      setError("Failed to add parking area: " + (error.response?.data || error.message));
+      toast.error(error.response?.data || error.message);
     }
   };
 
@@ -75,8 +65,6 @@ const AddParkingArea = () => {
     <div className="p-5">
       <h2 className="text-2xl font-bold mb-6">Add New Parking Area</h2>
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md flex flex-col gap-5">
-        {error && <div className="text-red-500 mb-4">{error}</div>}
-        {success && <div className="text-green-500 mb-4">{success}</div>}
         <div className="flex gap-10">
           <div className="mb-4 w-1/2">
             <TextInput
@@ -95,8 +83,8 @@ const AddParkingArea = () => {
               label="Parking ID"
               placeholder="Enter Parking ID"
               required
-              value={parkingData.id}
-              name="id"
+              value={parkingData.parkingId}
+              name="parkingId"
               onChange={handleChange}
             />
           </div>
