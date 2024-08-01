@@ -62,8 +62,8 @@ const AddParkingArea = () => {
   };
 
   return (
-    <div className="p-5">
-      <h2 className="text-2xl font-bold mb-6">Add New Parking Area</h2>
+    <div className="p-6 bg-gray-100 rounded-lg">
+      <h2 className="text-2xl font-bold mb-6">Add New Parking</h2>
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md flex flex-col gap-5">
         <div className="flex gap-10">
           <div className="mb-4 w-1/2">

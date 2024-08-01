@@ -83,9 +83,9 @@ const Analytics = () => {
   const barData = selectedAttendant ? monthlyData.map(month => ({ ...month, bookings: selectedAttendant.bookings })) : monthlyData;
 
   return (
-    <div className="p-2 font-sans">
+    <div className="p-6 bg-gray-100 font-sans rounded-lg">
       <h2 className="text-2xl mb-4 font-bold">Analytics</h2>
-      <div className="mb-4 flex gap-4 w-full shadow-md rounded-xl p-4">
+      <div className="mb-4 flex gap-4 w-full shadow-md rounded-xl p-4 bg-white">
         <label htmlFor="attendant-select" className="block min-w-max my-auto font-semibold">Select Attendant:</label>
         <select
           id="attendant-select"
@@ -102,7 +102,7 @@ const Analytics = () => {
         </select>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="border p-5 rounded-xl shadow-md">
+        <div className="border p-5 rounded-xl shadow-md bg-white">
           <h3 className="text-xl font-semibold text-center">Occupied vs Unoccupied Parking</h3>
           <ResponsiveContainer width="100%" height={chartDimensions.height}>
             <PieChart>
@@ -127,7 +127,7 @@ const Analytics = () => {
             <p><span className="inline-block w-4 h-4 mr-2" style={{ backgroundColor: COLORS[1] }}></span>Unoccupied</p>
           </div>
         </div>
-        <div className="border p-5 rounded-xl shadow-md">
+        <div className="border p-5 rounded-xl shadow-md bg-white">
           <h3 className="text-xl font-semibold text-center">Daily Bookings</h3>
           <ResponsiveContainer width="100%" height={chartDimensions.height}>
             <LineChart data={lineData}>
@@ -139,7 +139,7 @@ const Analytics = () => {
             </LineChart>
           </ResponsiveContainer>
         </div>
-        <div className="border p-5 rounded-xl shadow-md md:col-span-2">
+        <div className="border p-5 rounded-xl shadow-md md:col-span-2 bg-white">
           <h3 className="text-xl font-semibold text-center">Monthly Bookings</h3>
           <ResponsiveContainer width="100%" height={chartDimensions.height}>
             <BarChart data={barData}>

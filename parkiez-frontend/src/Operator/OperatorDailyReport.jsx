@@ -4,6 +4,7 @@ import 'tailwindcss/tailwind.css';
 
 const DailyReport = () => {
   const [selectedAttendantId, setSelectedAttendantId] = useState(null);
+  const [carsCurrentlyParked, setCarsCurrentlyParked] = useState(0);
 
   const data = useMemo(
     () => [
@@ -53,6 +54,20 @@ const DailyReport = () => {
     setSelectedAttendantId(attendantId);
   };
 
+  // const fetchCarsCurrentlyParked = async (attendantId) => {
+  //   try {
+  //     const response = await fetch(`http://localhost:8080/api/operator/carsCurrentlyParked?parkingId=${attendantId}`);
+  //     const data = await response.json();
+  //     setCarsCurrentlyParked(data);
+  //   } catch (error) {
+  //     console.error('Error fetching cars currently parked:', error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchCarsCurrentlyParked(selectedAttendantId);
+  // }, [selectedAttendantId]);
+
   let totalCarsCurrentlyParked = data.reduce((total, attendant) => total + attendant.carsCurrentlyParked, 0);
   let totalCarsToday = data.reduce((total, attendant) => total + attendant.carsTotalParked, 0);
   let totalTwoWheelersCurrentlyParked = data.reduce((total, attendant) => total + attendant.twoWheelersCurrentlyParked, 0);
@@ -63,8 +78,8 @@ const DailyReport = () => {
   let selectedAttendant = data.find(attendant => attendant.id === selectedAttendantId);
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h2 className="text-3xl mb-6 font-bold text-gray-700">Operator Daily Report</h2>
+    <div className="p-6 bg-gray-100 min-h-screen rounded-lg">
+      <h2 className="text-2xl mb-6 font-bold text-gray-700">Operator Daily Report</h2>
 
       {/* Total cards for all attendants */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">

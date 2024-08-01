@@ -123,8 +123,8 @@ const Attendants = () => {
   };
 
   return (
-    <div className="p-4">
-      <h2 className="text-3xl mb-4 font-bold">Attendants</h2>
+    <div className="p-6 bg-gray-100 rounded-lg">
+      <h2 className="text-2xl mb-4 font-bold">Attendants</h2>
       <div className="overflow-x-auto mb-4 shadow-lg">
         <table
           {...getTableProps()}

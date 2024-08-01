@@ -3,10 +3,14 @@ import TextInput from "../components/textinput";
 import CustomBtn from "../components/CustomBtn";
 import { addAttendant } from '../services/addAttendantService';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const AddAttendant = () => {
+
+  const navigate = useNavigate();
+
   const [attendantData, setattendantData] = useState({
-    phoneNumber: '',
+    phoneNo: '',
     parkingId: '',
     name: '',
     password:''
@@ -47,7 +51,7 @@ const AddAttendant = () => {
   };
 
   return (
-    <div className="p-5">
+    <div className="p-6 bg-gray-100 rounded-lg">
       <h2 className="text-2xl font-bold mb-6">Add Attendant</h2>
       <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md flex flex-col gap-5">
         <TextInput
@@ -119,7 +123,6 @@ const AddAttendant = () => {
           text="Add Attendant"
           type="submit"
           textcolor="white"
-          onClick={handleSubmit}
         />
       </form>
     </div>

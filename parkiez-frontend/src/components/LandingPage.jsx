@@ -16,7 +16,7 @@ const Home = () => {
                   Sign In
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to="/operatorlogin" className="bg-green-600 text-white px-5 py-3 rounded-full font-semibold hover:bg-green-700 hover:shadow-md">
                   Operator Login
                 </Link>
@@ -25,7 +25,7 @@ const Home = () => {
                 <Link to="/attendantlogin" className="bg-green-600 text-white px-5 py-3 rounded-full font-semibold hover:bg-green-700 hover:shadow-md">
                   Attendent Login
                 </Link>
-              </li>
+              </li> */}
               {/* <li><Link to="/signup" className="text-green-600 hover:text-green-800">Sign Up</Link></li> */}
             </ul>
           </nav>
@@ -38,7 +38,7 @@ const Home = () => {
           <h1 className="text-5xl font-bold mb-5 ml-4">Welcome to Parkiez</h1>
           <p className="text-lg mb-10 ml-4">Your ultimate solution for hassle-free parking management.</p>
           <div className="flex space-x-5">
-            <Link to="/signin" className="bg-white text-green-600 px-5 py-3 rounded-full font-bold hover:bg-gray-100 hover:shadow-md">
+            {/* <Link to="/signin" className="bg-white text-green-600 px-5 py-3 rounded-full font-bold hover:bg-gray-100 hover:shadow-md">
               Sign In
             </Link>
             <Link to="/operatorlogin" className="bg-white text-green-600 px-5 py-3 rounded-full font-bold hover:bg-gray-100 hover:shadow-md">
@@ -46,7 +46,7 @@ const Home = () => {
             </Link>
             <Link to="/attendantlogin" className="bg-white text-green-600 px-5 py-3 rounded-full font-bold hover:bg-gray-100 hover:shadow-md">
               Attendent Login
-            </Link>
+            </Link> */}
             {/* <Link to="/signup" className="bg-white text-green-600 px-5 py-3 rounded-full font-semibold hover:bg-gray-100">Sign Up</Link> */}
           </div>
         </div>
