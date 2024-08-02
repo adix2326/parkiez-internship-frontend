@@ -41,6 +41,7 @@ const AddAttendant = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log(attendantData)
       await addAttendant(attendantData);
       // console.log(attendantData);
       toast.success("Attendant Added Successfully");
@@ -68,8 +69,8 @@ const AddAttendant = () => {
           label="Phone Number"
           placeholder="Enter attendant phone number"
           required
-          value={attendantData.phoneNumber}
-          name="phoneNumber"
+          value={attendantData.phoneNo}
+          name="phoneNo"
           onChange={handleChange}
         />
         <TextInput
