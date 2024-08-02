@@ -68,8 +68,8 @@ const AddAttendant = () => {
           label="Phone Number"
           placeholder="Enter attendant phone number"
           required
-          value={attendantData.phoneNumber}
-          name="phoneNumber"
+          value={attendantData.phoneNo}
+          name="phoneNo"
           onChange={handleChange}
         />
         <TextInput

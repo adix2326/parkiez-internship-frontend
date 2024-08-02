@@ -41,7 +41,7 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div className="h-screen bg-slate-50 flex flex-col relative">
+    <div className="h-screen flex flex-col relative">
       <Header toggleSidebar={toggleSidebar} />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar
@@ -50,7 +50,7 @@ const AdminDashboard = () => {
           onAddOperatorClick={handleAddOperatorClick}
         />
         <div className="flex-1 flex flex-col p-5">
-          <h2 className="text-2xl font-bold mb-6">Welcome to the Admin Dashboard</h2>
+          {/* <h2 className="text-2xl font-bold mb-6">Welcome to the Admin Dashboard</h2> */}
           {showAddOperator && <AddOperator />}
         </div>
       </div>

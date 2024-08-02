@@ -14,12 +14,7 @@ const Header = ({ toggleSidebar }) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const userFromStorage = authService.getCurrentUserFromStorage();
-      if (!userFromStorage) {
-        navigate("/");
-        return;
-      }
-      const currentUser = await authService.getCurrentUser();
+      const currentUser = JSON.parse(localStorage.getItem('user'));
       if (!currentUser) {
         navigate("/");
       } else {

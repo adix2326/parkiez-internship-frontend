@@ -11,8 +11,6 @@ const AddOperator = () => {
     phoneNo: "",
     password: "",
   });
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
 
   const handleOperatorChange = (e) => {
     const { name, value } = e.target;
@@ -21,24 +19,19 @@ const AddOperator = () => {
 
   const handleOperatorSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
-    setSuccess(null);
     try {
       await addOperator(operatorData);
       console.log(operatorData);
-      setSuccess("Operator added successfully");
-      toast.success(success);
+      toast.success("Operator Added Successfully");
     } catch (error) {
-      setError("Failed to add operator: " + (error.response?.data || error.message));
+      toast.error(error.response?.data || error.message)
     }
   };
 
   return (
-    <div className="bg-white p-6 rounded-xl w-11/12 shadow-md flex flex-col gap-5">
-      <h3 className="text-xl font-bold mb-4 text-center">Add Operator</h3>
-      <form onSubmit={handleOperatorSubmit}>
-        {error && <div className="text-red-500">{error}</div>}
-        {success && <div className="text-green-500">{success}</div>}
+    <div className="bg-gray-100 p-6 rounded-xl w-full flex flex-col gap-5">
+      <h3 className="text-xl font-bold mb-4 ">Add Operator</h3>
+      <form className="bg-white p-5 rounded-lg flex flex-col gap-5 shadow-md" onSubmit={handleOperatorSubmit}>
         <TextInput
           type="text"
           label="Operator ID"

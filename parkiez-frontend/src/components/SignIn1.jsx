@@ -24,7 +24,11 @@ const SignIn1 = () => {
       } else if (role === 'ROLE_OPERATOR') {
         toast.success('Login successful!');
         navigate('/operatordashboard');
-      } else {
+      }else if (role === 'ROLE_ATTENDANT') {
+        toast.success('Login successful!');
+        navigate('/attendantdashboard');
+      }  
+      else {
         setError('Invalid Role');
         toast.error('Invalid Role');
       }
@@ -36,7 +40,7 @@ const SignIn1 = () => {
 
   return (
     <div className="flex w-full h-screen">
-      <div className="hidden md:flex md:w-1/2 bg-green-600 text-white relative">
+      <div className="hidden md:flex md:w-2/3 bg-green-600 text-white relative">
         <img src={HeroImage} alt="Parking" className="absolute inset-0 object-cover w-full h-full opacity-70" />
         <div className="container mx-auto flex flex-col justify-center items-center py-20 relative">
           <h1 className="text-5xl font-bold mb-5 ml-4 text-White-600">Welcome to Parkiez</h1>
@@ -54,11 +58,11 @@ const SignIn1 = () => {
           </div> */}
         </div>
       </div>
-      <div className="flex w-full md:w-1/2 justify-center items-center">
+      <div className="flex w-full md:w-1/3 justify-center items-center">
         <div className="bg-white p-10 w-full max-w-md rounded-3xl shadow-2xl">
           <img src={ParkiezLogo} alt="parkiez-logo" className="mx-auto mb-5 h-16" />
           <form className="flex flex-col gap-5" onSubmit={handleSignIn}>
-            {error && <div className="text-red-500 text-center">{error}</div>}
+            {/* {error && <div className="text-red-500 text-center">{error}</div>} */}
             <TextInput
               type="text"
               label="Username"
