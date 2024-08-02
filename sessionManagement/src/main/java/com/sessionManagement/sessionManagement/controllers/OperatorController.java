@@ -44,6 +44,27 @@ public class OperatorController
     @Autowired
     BookingRepo bookingRepo;
 
+    @PostMapping("/addAttendant")
+    public ResponseEntity<?> addAttendant(@Valid @RequestBody Attendant attendant) {
+        if (attendantRepo.existsByPhoneNo(attendant.getPhoneNo())) {
+            return ResponseEntity.badRequest().body("Attendant with provided phone number already exists");
+        }
+
+        Map<String, String> errors = getErrors(attendant);
+        if (!errors.isEmpty()) {
+            return ResponseEntity.badRequest().body(errors);
+        }
+
+        Set<Role> roles = new HashSet<>();
+        Role attendantRole = roleRepo.findByName(ERole.ROLE_ATTENDANT)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        roles.add(attendantRole);
+
+        attendant.setRoles(roles);
+        attendant.setPassword(encoder.encode(attendant.getPassword()));
+
+        return ResponseEntity.ok(attendantRepo.save(attendant));
+    }
 
     @GetMapping("/forOperator")
     public String forOperatorTest()
@@ -66,32 +87,7 @@ public class OperatorController
     }
 
 
-    @PostMapping("/addAttendant")
-    public ResponseEntity<?> addAttendant(@Valid @RequestBody Attendant attendant)
-    {
-        if( attendantRepo.existsByPhoneNo(attendant.getPhoneNo()) || attendantRepo.existsByUserId(attendant.getUserId()) )
-        {
-            return ResponseEntity.badRequest().body("Attendant already exists");
-        }
-        if( !parkingRepo.existsById( attendant.getParkingId() ) )
-        {
-            return ResponseEntity.badRequest().body("Parking with specified parking ID does not exist");
-        }
 
-        Map<String, String> errors = getErrors(attendant);
-
-        if (!errors.isEmpty())
-            return ResponseEntity.badRequest().body(errors);
-
-        Set<Role> roles = new HashSet<>();
-
-        Role adminRole = roleRepo.findByName(ERole.ROLE_ATTENDANT)
-                .orElseThrow( () -> new RuntimeException("Error: Role is not found") );
-        roles.add(adminRole);
-        attendant.setRoles(roles);
-        attendant.setPassword(encoder.encode(attendant.getPassword()));
-        return ResponseEntity.ok(attendantRepo.save(attendant));
-    }
 
     private static Map<String, String> getErrors(Attendant attendant) {
         Map<String, String> errors = new HashMap<>();

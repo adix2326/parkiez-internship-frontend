@@ -15,6 +15,19 @@ public class Attendant
     private String parkingId;
     private String name;
     private Set<Role> roles;
+
+    @Override
+    public String toString() {
+        return "Attendant{" +
+                "userId='" + userId + '\'' +
+                ", phoneNo='" + phoneNo + '\'' +
+                ", password='" + password + '\'' +
+                ", parkingId='" + parkingId + '\'' +
+                ", name='" + name + '\'' +
+                ", roles=" + roles +
+                '}';
+    }
+
     public Attendant()
     {
 
