@@ -41,6 +41,7 @@ const AddAttendant = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      console.log(attendantData)
       await addAttendant(attendantData);
       // console.log(attendantData);
       toast.success("Attendant Added Successfully");
