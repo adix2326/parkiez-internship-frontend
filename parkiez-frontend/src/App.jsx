@@ -4,27 +4,23 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Home from './components/LandingPage';
-import OperatorLogin from './Operator/operatorlogin';
-import AttendantLogin from './Attendent/attendantlogin';
 import SignIn from './components/SignIn1';
-import authService from './services/auth.service';
 /* Operator */
 import OperatorDashboard from './Operator/OperatorDashboard';
-import DailyReport from './Operator/OperatorDailyReport';
+import OperatorDailyReport from './Operator/OperatorDailyReport';
 import Analytics from './Operator/OperatorAnalytics';
 import Attendants from './Operator/Attendants';
 import AddAttendant from './Operator/AddAttendant'
 import AddParking from './Operator/AddParking'
 /* Attendant */
 import AttendantDashboard from './Attendent/AttendantDashboard';
+import AttendantDailyReport from './Attendent/AttendantDailyReport';
 import MakeEntry from './Attendent/MakeEntry';
 import MakeExit from './Attendent/MakeExit';
 /* Admin  */
 import AdminDashboard from './Admin/AdminDashboard_original';
 
 function App() {
-  const currentUser = authService.getCurrentUserFromStorage();
-
   return (
     <div>
       <ToastContainer />
@@ -32,15 +28,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
-          <Route path="/operatorlogin" element={<OperatorLogin />} />
-          <Route path="/attendantlogin" element={<AttendantLogin />} />
 
           <Route
             path="/attendantdashboard"
             element={
-              currentUser && currentUser.roles.includes('ROLE_ATTENDANT')
-                ? <AttendantDashboard />
-                : <Navigate to="/signin" />
+              <AttendantDashboard />
             }
           >
             <Route path="" element={<Navigate to="daily-report" />} />
@@ -56,7 +48,7 @@ function App() {
             }
           >
             <Route path="" element={<Navigate to="daily-report" />} />
-            <Route path="daily-report" element={<DailyReport />} />
+            <Route path="daily-report" element={<OperatorDailyReport />} />
             <Route path="analytics" element={<Analytics />} />
             <Route path="attendants" element={<Attendants />} />
             <Route path="add-attendant" element={<AddAttendant />} />
@@ -66,9 +58,7 @@ function App() {
           <Route
             path="/admindashboard"
             element={
-              currentUser && currentUser.roles.includes('ROLE_ADMIN')
-                ? <AdminDashboard />
-                : <Navigate to="/signin" />
+              <AdminDashboard />
             }
           />
         </Routes>
