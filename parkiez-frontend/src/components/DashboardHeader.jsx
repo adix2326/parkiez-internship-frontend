@@ -40,13 +40,15 @@ const Header = ({ toggleSidebar }) => {
         <img className='hidden sm:block' src={ParkiezLogo} alt="parkiez-logo" width={50} />
       </div>
       <h1 className="text-2xl text-green-500 font-bold">Dashboard</h1>
-      <div className="relative flex justify-center items-center gap-3">
-        {currentUser && <h3 className="text-xl text-green-600">{currentUser.username}</h3>}
-        <button onClick={toggleDropdown} className="text-gray-800 hover:text-gray-900">
-          <span className='text-green-500 w-12 h-12 border-2 border-green-500 rounded-full flex justify-center items-center gap-2 hover:scale-125 hover:text-green-300 hover:border-green-300 duration-300'>
-            <AccountCircleRoundedIcon fontSize='large'/>
-          </span>
-        </button>
+      <div className="relative">
+        <div className="flex items-center gap-3">
+          {currentUser && <h3 className="text-xl text-green-600">{currentUser.username}</h3>}
+          <button onClick={toggleDropdown} className="text-gray-800 hover:text-gray-900">
+            <span className='text-green-500 w-12 h-12 border-2 border-green-500 rounded-full flex justify-center items-center gap-2 hover:scale-105 hover:text-green-300 hover:border-green-300 duration-300'>
+              <AccountCircleRoundedIcon fontSize='large'/>
+            </span>
+          </button>
+        </div>
         {isDropdownOpen && (
           <div className="absolute right-0 mt-2 w-52 bg-white border rounded-lg shadow-lg">
             <Link to="/dashboard/profile" className="flex gap-2 px-4 py-2 font-semibold text-green-500 hover:bg-gray-100">

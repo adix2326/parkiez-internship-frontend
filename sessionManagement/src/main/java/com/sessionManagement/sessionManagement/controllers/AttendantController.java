@@ -26,7 +26,7 @@ import static com.sessionManagement.sessionManagement.controllers.AdminControlle
 
 @RestController
 @RequestMapping("api/attendant")
-@PreAuthorize("hasRole('ATTENDANT')")
+@PreAuthorize("hasRole('ROLE_ATTENDANT')")
 @CrossOrigin( origins = "http://localhost:5173/", allowCredentials = "true")
 public class AttendantController
 {
@@ -85,8 +85,11 @@ public class AttendantController
 
     @PostMapping("/exit")
     public ResponseEntity<?> exitParking(@RequestParam String vehicleNo) {
+        System.out.println("exitParking method called with vehicleNo: " + vehicleNo);
+
         // Fetch the booking details using the vehicle number
-        Optional<Booking> bookingOpt = bookingRepo.findByVehicleNo(vehicleNo);
+        Optional<Booking> bookingOpt = bookingRepo.findBookingWithEqualInAndOutTime(vehicleNo);
+        System.out.println("Booking found: " + bookingOpt);
 
         if (!bookingOpt.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -97,7 +100,10 @@ public class AttendantController
         booking.setOutTime(LocalDateTime.now());
 
         // Fetch the parking details using the parking ID from booking
-        Optional<Parking> parkingOpt = parkingRepo.findById(booking.getParkingId());
+        String parkingId = booking.getParkingId();
+        System.out.println("Parking ID: " + parkingId);
+        Optional<Parking> parkingOpt = parkingRepo.findById(parkingId);
+        System.out.println("Parking found: " + parkingOpt);
 
         if (!parkingOpt.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -120,6 +126,9 @@ public class AttendantController
             int hourlyRate = booking.getVehicleType().equalsIgnoreCase("2wheeler") ?
                     parking.getCost2wheeler() : parking.getCost4wheeler();
             amountPaid = (int) ((durationMinutes / 60.0) * hourlyRate);
+            System.out.println("Duration in Minutes: " + durationMinutes);
+            System.out.println("Hourly Rate: " + hourlyRate);
+            System.out.println("Amount Paid: " + amountPaid);
         }
 
         booking.setAmountPaid(amountPaid);
@@ -129,5 +138,7 @@ public class AttendantController
 
         return ResponseEntity.ok(booking);
     }
+
+
 }
 

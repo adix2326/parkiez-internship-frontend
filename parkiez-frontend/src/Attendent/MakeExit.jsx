@@ -2,139 +2,121 @@ import React, { useState } from 'react';
 import TextInput from '../components/textinput';
 import CustomBtn from '../components/CustomBtn';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import {makeExit} from '../services/makeExitService'
 
 const MakeExit = () => {
   const navigate = useNavigate();
-  
+
   const [formData, setFormData] = useState({
-    vehicleRegNo: '',
-    parkingSlot: '',
-    amountPaid: '',
-    outTime: '',
-    paymentStatus: '',
+    vehicleNo: ''
   });
 
   const [errors, setErrors] = useState({});
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
+  // const [checked, setChecked] = useState(false);
+
+  const validateField = (name, value) => {
+    let error = '';
+
+    switch (name) {
+      case 'vehicleNo':
+        const vehicleNoPattern = /^[A-Za-z]{2}\d{2}[A-Za-z]{2}\d{4}$/;
+        if (!vehicleNoPattern.test(value)) {
+          error = "Invalid Vehicle Registration Number Format";
+        }
+        break;
+      default:
+        break;
+    }
+
+    setErrors(prevErrors => ({ ...prevErrors, [name]: error }));
+    return error === '';
+  };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: '' }); // Clear error on change
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    validateField(name, value);
   };
 
-  const validateFields = () => {
-    const newErrors = {};
+  // const handleCheck = async () => {
+  //   setLoading(true);
     
-    // Vehicle Registration Number validation (e.g., MH12AB1234)
-    const vehicleRegNoPattern = /^[A-Z]{2}\d{2}[A-Z]{2}\d{4}$/;
-    if (!vehicleRegNoPattern.test(formData.vehicleRegNo)) {
-      newErrors.vehicleRegNo = "Invalid Vehicle Registration Number. Format should be like 'MH12AB1234'.";
-    }
+  //   try {
+  //     // Assume fetchVehicleDetails is a function that fetches the details from the backend
+  //     const vehicleDetails = await fetchVehicleDetails(formData.vehicleNo);
 
-    // Amount Paid validation (must be greater than 0)
-    if (parseFloat(formData.amountPaid) <= 0) {
-      newErrors.amountPaid = "Amount paid must be greater than 0.";
-    }
+  //     // Update formData with the fetched details
+  //     setFormData({
+  //       ...formData,
+  //       ...vehicleDetails,
+  //     });
 
-    // Out Time validation (should not be empty)
-    if (!formData.outTime.trim()) {
-      newErrors.outTime = "Out Time is required.";
-    }
-
-    // Payment Status validation (should be selected)
-    if (!formData.paymentStatus) {
-      newErrors.paymentStatus = "Please select a payment status.";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0; // Return true if no errors
-  };
+  //     // Mark the vehicle as checked
+  //     setChecked(true);
+  //   } catch (error) {
+  //     setErrors({ submit: error.message || 'An error occurred while checking vehicle details.' });
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    // setLoading(true);
 
-    if (!validateFields()) {
-      setLoading(false);
-      return;
-    }
+    // const allValid = Object.keys(formData).every(field => validateField(field, formData[field]));
+    // if (!allValid) {
+    //   setLoading(false);
+    //   return;
+    // }
 
     try {
-      // Replace with your API call to add exit data
-      // await makeExitService(formData);
-
       console.log(formData);
-      navigate('/dashboard'); // Adjust this route as necessary
+      await makeExit(formData);
+      navigate('/dashboard');
+      toast.success("Exit Done !!")
     } catch (error) {
       setErrors({ submit: error.message || 'An error occurred while processing your request.' });
+      toast.error(error.message);
     } finally {
-      setLoading(false);
+      // setLoading(false);
     }
+  };
+
+  const getBorderColor = (fieldName) => {
+    if (errors[fieldName]) return 'border-red-500';
+    if (formData[fieldName] && !errors[fieldName]) return 'border-green-500';
+    return 'border-gray-300';
   };
 
   return (
     <div className="p-6 bg-gray-100 rounded-lg">
       <h2 className="text-2xl font-bold mb-6">Vehicle Exit</h2>
       <form className="bg-white p-6 rounded-lg shadow-md flex flex-col gap-5" onSubmit={handleSubmit}>
-        <TextInput
-          label="Vehicle Registration Number"
-          type="text"
-          name="vehicleRegNo"
-          value={formData.vehicleRegNo}
-          onChange={handleChange}
-          placeholder="Enter vehicle registration number"
-          required
-          className={`${errors.vehicleRegNo ? 'border-red-500' : ''}`}
-        />
-        {errors.vehicleRegNo && <p className="text-red-500 mt-1 text-sm">{errors.vehicleRegNo}</p>}
-
-        <TextInput
-          label="Amount Paid"
-          type="number"
-          name="amountPaid"
-          value={formData.amountPaid}
-          onChange={handleChange}
-          placeholder="Enter amount paid"
-          required
-          className={`${errors.amountPaid ? 'border-red-500' : ''}`}
-        />
-        {errors.amountPaid && <p className="text-red-500 mt-1 text-sm">{errors.amountPaid}</p>}
-
-        <TextInput
-          label="Out Time"
-          type="text"
-          name="outTime"
-          value={formData.outTime}
-          onChange={handleChange}
-          placeholder="Enter out time (e.g. 12:30 PM)"
-          required
-          className={`${errors.outTime ? 'border-red-500' : ''}`}
-        />
-        {errors.outTime && <p className="text-red-500 mt-1 text-sm">{errors.outTime}</p>}
-
-        <div className="flex flex-col">
-          <label className="mb-2 ml-1 font-semibold">Payment Status</label>
-          <select
-            name="paymentStatus"
-            value={formData.paymentStatus}
+        <div>
+          <TextInput
+            label="Vehicle Registration Number"
+            type="text"
+            name="vehicleNo"
+            value={formData.vehicleNo}
             onChange={handleChange}
-            className={`p-2 pl-4 border rounded-lg bg-slate-50 shadow-sm ${errors.paymentStatus ? 'border-red-500' : ''}`}
+            placeholder="Enter vehicle registration number"
             required
-          >
-            <option value="" disabled>Select Payment Status</option>
-            <option value="Paid">Paid</option>
-            <option value="Not Paid">Not Paid</option>
-          </select>
-          {errors.paymentStatus && <p className="text-red-500 mt-1 text-sm">{errors.paymentStatus}</p>}
+            borderColor={getBorderColor('vehicleNo')}
+          />
+          {errors.vehicleNo && <p className="text-red-500 mt-1 text-xs font-semibold pl-2">{errors.vehicleNo}</p>}
         </div>
 
-        {errors.submit && <p className="text-red-500 mt-3 text-sm">{errors.submit}</p>}
-        
         <CustomBtn
-          text={loading ? "Adding..." : "Exit"}
-          type="submit"
+          // text={loading ? "Processing..." : (checked ? "Exit" : "Check")}
+          text={"exit"}
+          type="button"
           textcolor="white"
-          disabled={loading}
+          // onClick={checked ? handleSubmit : handleCheck}
+          onClick={handleSubmit}
+          // disabled={loading}
         />
       </form>
     </div>

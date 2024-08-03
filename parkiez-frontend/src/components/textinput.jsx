@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TextInput = ({ type, label, placeholder, required, value, onChange, name }) => (
+const TextInput = ({ type, label, placeholder, required, value, onChange, name, borderColor }) => (
   <div className='flex flex-col'>
     <label className='mb-2 ml-1 font-semibold'>{label}</label>
     <input 
@@ -10,7 +10,7 @@ const TextInput = ({ type, label, placeholder, required, value, onChange, name }
       value={value} 
       onChange={onChange} 
       name={name} 
-      className='p-2 pl-4 border rounded-lg bg-slate-50 shadow-sm'
+      className={`p-2 pl-4 border outline-none ${borderColor} rounded-lg bg-slate-50 shadow-sm`}
     />
   </div>
 );
