@@ -35,8 +35,8 @@ function App() {
               <AttendantDashboard />
             }
           >
-            <Route path="" element={<Navigate to="daily-report" />} />
-            <Route path="daily-report" element={<AttendantDailyReport />} />
+            {/* <Route path="" element={<Navigate to="daily-report" />} /> */}
+            {/* <Route path="daily-report" element={<AttendantDailyReport />} /> */}
             <Route path="make-entry" element={<MakeEntry />} />
             <Route path="make-exit" element={<MakeExit />} />
           </Route>
