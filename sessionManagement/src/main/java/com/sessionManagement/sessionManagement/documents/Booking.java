@@ -17,16 +17,26 @@ public class Booking
     private LocalDateTime inTime;
     private LocalDateTime outTime;
     private String vehicleNo;
+
+    private String vehicleType;
     private String phoneNo;
     private String transactionId;
     private String attendantPhoneNo;
 
-    public Booking(String parkingId, String paymentType, LocalDateTime inTime, LocalDateTime outTime, String vehicleNo, String phoneNo, String transactionId, String attendantPhoneNo) {
+    public Booking(String paymentType, String vehicleNo, String vehicleType, String phoneNo) {
+        this.paymentType = paymentType;
+        this.vehicleNo = vehicleNo;
+        this.vehicleType = vehicleType;
+        this.phoneNo = phoneNo;
+    }
+
+    public Booking(String parkingId, String paymentType, LocalDateTime inTime, LocalDateTime outTime, String vehicleNo, String vehicleType, String phoneNo, String transactionId, String attendantPhoneNo) {
         this.parkingId = parkingId;
         this.paymentType = paymentType;
         this.inTime = inTime;
         this.outTime = outTime;
         this.vehicleNo = vehicleNo;
+        this.vehicleType = vehicleType;
         this.phoneNo = phoneNo;
         this.transactionId = transactionId;
         this.attendantPhoneNo = attendantPhoneNo;
@@ -86,6 +96,14 @@ public class Booking
 
     public void setPhoneNo(String phoneNo) {
         this.phoneNo = phoneNo;
+    }
+
+    public String getVehicleType() {
+        return vehicleType;
+    }
+
+    public void setVehicleType(String vehicleType) {
+        this.vehicleType = vehicleType;
     }
 
     public String getTransactionId() {

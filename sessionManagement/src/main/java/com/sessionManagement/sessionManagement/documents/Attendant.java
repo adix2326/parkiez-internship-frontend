@@ -3,6 +3,7 @@ package com.sessionManagement.sessionManagement.documents;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Document(collection = "Attendant")
@@ -14,7 +15,7 @@ public class Attendant
     private String password;
     private String parkingId;
     private String name;
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
     @Override
     public String toString() {

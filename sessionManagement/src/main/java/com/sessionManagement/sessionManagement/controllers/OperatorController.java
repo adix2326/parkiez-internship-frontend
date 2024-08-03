@@ -50,6 +50,8 @@ public class OperatorController
             return ResponseEntity.badRequest().body("Attendant with provided phone number already exists");
         }
 
+        System.out.println(attendant.toString());
+
         Map<String, String> errors = getErrors(attendant);
         if (!errors.isEmpty()) {
             return ResponseEntity.badRequest().body(errors);
@@ -115,7 +117,7 @@ public class OperatorController
 
 
 
-    @GetMapping("/totalParkedFourWheelers")
+    @GetMapping("/currentlyParkedFourWheelers")
     public ResponseEntity<?> getTotalParkedFourWheelers(@Valid @RequestBody Booking booking) {
         if (!parkingRepo.existsById(booking.getParkingId())) {
             return ResponseEntity.badRequest().body("Parking with specified parking ID does not exist");
@@ -127,7 +129,7 @@ public class OperatorController
         long totalParkedFourWheelers = bookingRepo.countParkedFourWheelers(booking.getParkingId());
         return ResponseEntity.ok(totalParkedFourWheelers);
     }
-    @GetMapping("/totalParkedTwoWheelers")
+    @GetMapping("/currentlyParkedTwoWheelers")
     public ResponseEntity<?> getTotalParkedTwoWheelers(@Valid @RequestBody Booking booking) {
         if (!parkingRepo.existsById(booking.getParkingId())) {
             return ResponseEntity.badRequest().body("Parking with specified parking ID does not exist");

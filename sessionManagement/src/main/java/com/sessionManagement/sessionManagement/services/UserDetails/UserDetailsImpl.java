@@ -32,6 +32,13 @@ public class UserDetailsImpl implements UserDetails
         this.authorities = authorities;
     }
 
+    public UserDetailsImpl(String username, String password, Collection<? extends GrantedAuthority> authorities)
+    {
+        this.username = username;
+        this.password = password;
+        this.authorities = authorities;
+    }
+
     public UserDetailsImpl(Object adminId) {
     }
 
@@ -76,7 +83,7 @@ public class UserDetailsImpl implements UserDetails
 
         return new UserDetailsImpl
                 (
-                        admin.getUserId(),
+//                        admin.getUserId(),
                         admin.getPhoneNo(),
                         admin.getPassword(),
                         authorities

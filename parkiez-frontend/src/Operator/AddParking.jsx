@@ -127,45 +127,49 @@ const AddParkingArea = () => {
           </div>
         </div>
         <div className="grid grid-cols-2 gap-10">
-          <TextInput
-            type="number"
-            label="Cost for 2 Wheeler"
-            placeholder="Enter cost for 2 wheeler"
-            required
-            value={parkingData.cost2wheeler}
-            name="cost2wheeler"
-            onChange={handleChange}
-          />
-          <TextInput
-            type="number"
-            label="Cost for 4 Wheeler"
-            placeholder="Enter cost for 4 wheeler"
-            required
-            value={parkingData.cost4wheeler}
-            name="cost4wheeler"
-            onChange={handleChange}
-          />
-        </div>
+        <TextInput
+          type="number"
+          label="Cost for 2 Wheeler"
+          placeholder="Enter cost for 2 wheeler"
+          required
+          value={parkingData.cost2wheeler}
+          name="cost2wheeler"
+          min="0"
+          onChange={handleChange}
+        />
+        <TextInput
+          type="number"
+          label="Cost for 4 Wheeler"
+          placeholder="Enter cost for 4 wheeler"
+          required
+          value={parkingData.cost4wheeler}
+          name="cost4wheeler"
+          min="0"
+          onChange={handleChange}
+        />
+      </div>
         <div className="grid grid-cols-2 gap-10">
-          <TextInput
-            type="number"
-            label="Latitude"
-            placeholder="Enter latitude"
-            required
-            value={parkingData.latitude}
-            name="latitude"
-            onChange={handleChange}
-          />
-          <TextInput
-            type="number"
-            label="Longitude"
-            placeholder="Enter longitude"
-            required
-            value={parkingData.longitude}
-            name="longitude"
-            onChange={handleChange}
-          />
-        </div>
+        <TextInput
+          type="text"
+          label="Latitude"
+          placeholder="Enter latitude (e.g., 37.7749)"
+          required
+          value={parkingData.latitude}
+          name="latitude"
+          pattern="^-?([1-8]?\d(\.\d+)?|90(\.0+)?)$"
+          onChange={handleChange}
+        />
+        <TextInput
+          type="text"
+          label="Longitude"
+          placeholder="Enter longitude (e.g., -122.4194)"
+          required
+          value={parkingData.longitude}
+          name="longitude"
+          pattern="^-?(180(\.0+)?|(1[0-7]\d|\d{1,2})(\.\d+)?)$"
+          onChange={handleChange}
+        />
+      </div>
         <div className="mb-4 flex items-center">
           <input
             type="checkbox"
@@ -176,25 +180,28 @@ const AddParkingArea = () => {
           />
         </div>
         <div className="grid grid-cols-2 gap-10">
-          <TextInput
-            type="number"
-            label="Capacity for 2 Wheeler"
-            placeholder="Enter capacity for 2 wheeler"
-            required
-            value={parkingData.capacity2wheeler}
-            name="capacity2wheeler"
-            onChange={handleChange}
-          />
-          <TextInput
-            type="number"
-            label="Capacity for 4 Wheeler"
-            placeholder="Enter capacity for 4 wheeler"
-            required
-            value={parkingData.capacity4wheeler}
-            name="capacity4wheeler"
-            onChange={handleChange}
-          />
-        </div>
+        <TextInput
+          type="number"
+          label="Capacity for 2 Wheeler"
+          placeholder="Enter capacity for 2 wheeler"
+          required
+          value={parkingData.capacity2wheeler}
+          name="capacity2wheeler"
+          min="0"
+          onChange={handleChange}
+        />
+        <TextInput
+          type="number"
+          label="Capacity for 4 Wheeler"
+          placeholder="Enter capacity for 4 wheeler"
+          required
+          value={parkingData.capacity4wheeler}
+          name="capacity4wheeler"
+          min="0"
+          onChange={handleChange}
+        />
+      </div>
+
         <TextInput
           type="text"
           label="Address"
