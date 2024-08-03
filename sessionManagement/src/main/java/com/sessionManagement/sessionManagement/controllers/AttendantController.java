@@ -5,6 +5,7 @@ import com.sessionManagement.sessionManagement.documents.Booking;
 import com.sessionManagement.sessionManagement.documents.Parking;
 import com.sessionManagement.sessionManagement.repo.AttendantRepo;
 import com.sessionManagement.sessionManagement.repo.BookingRepo;
+import com.sessionManagement.sessionManagement.repo.ParkingRepo;
 import com.sessionManagement.sessionManagement.repo.TransactionIdSequenceRepo;
 import com.sessionManagement.sessionManagement.services.AttendantService;
 import com.sessionManagement.sessionManagement.services.BookingService;
@@ -37,6 +38,9 @@ public class AttendantController
 
     @Autowired
     private BookingRepo bookingRepo;
+
+    @Autowired
+    private ParkingRepo parkingRepo;
 
     @Autowired
     private AttendantRepo attendantRepo;
@@ -77,6 +81,53 @@ public class AttendantController
         booking.setTransactionId(String.valueOf(transactionId));
 //        System.out.println(booking.toString());
         return ResponseEntity.ok(bookingRepo.save(booking));
+    }
+
+    @PostMapping("/exit")
+    public ResponseEntity<?> exitParking(@RequestParam String vehicleNo) {
+        // Fetch the booking details using the vehicle number
+        Optional<Booking> bookingOpt = bookingRepo.findByVehicleNo(vehicleNo);
+
+        if (!bookingOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Booking not found with vehicle number: " + vehicleNo);
+        }
+
+        Booking booking = bookingOpt.get();
+        booking.setOutTime(LocalDateTime.now());
+
+        // Fetch the parking details using the parking ID from booking
+        Optional<Parking> parkingOpt = parkingRepo.findById(booking.getParkingId());
+
+        if (!parkingOpt.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Parking details not found for the booking.");
+        }
+
+        Parking parking = parkingOpt.get();
+        String costingType = parking.getCostingType();
+        int amountPaid = 0;
+
+        // Calculate the amount to be paid based on costing type
+        if (costingType.equalsIgnoreCase("fixed")) {
+            if (booking.getVehicleType().equalsIgnoreCase("2wheeler")) {
+                amountPaid = parking.getCost2wheeler();
+            } else if (booking.getVehicleType().equalsIgnoreCase("4wheeler")) {
+                amountPaid = parking.getCost4wheeler();
+            }
+        } else if (costingType.equalsIgnoreCase("hourly")) {
+            long durationMinutes = java.time.Duration.between(booking.getInTime(), booking.getOutTime()).toMinutes();
+            int hourlyRate = booking.getVehicleType().equalsIgnoreCase("2wheeler") ?
+                    parking.getCost2wheeler() : parking.getCost4wheeler();
+            amountPaid = (int) ((durationMinutes / 60.0) * hourlyRate);
+        }
+
+        booking.setAmountPaid(amountPaid);
+
+        // Save the updated booking
+        bookingRepo.save(booking);
+
+        return ResponseEntity.ok(booking);
     }
 }
 

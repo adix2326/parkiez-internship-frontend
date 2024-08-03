@@ -6,9 +6,13 @@ import org.springframework.data.mongodb.repository.Query;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface BookingRepo extends MongoRepository<Booking, String>
 {
+    @Query("{ 'vehicleNo': ?0, 'inTime': { $eq: 'outTime' } }")
+    Optional<Booking> findByVehicleNo(String vehicleNo);
+
     @Query("{ 'vehicleType': 'four wheeler', 'outTime': null, 'parkingId': ?0 }")
     long countParkedFourWheelers(String parkingId);
     @Query("{ 'vehicleType': 'two wheeler', 'outTime': null, 'parkingId': ?0 }")
