@@ -21,6 +21,12 @@ const AttendantSidebar = ({ sidebarOpen, toggleSidebar }) => {
         ✕
       </button>
       <ul className="absolute top-20 grid grid-col p-5 text-green-500 gap-5 text-2xl font-semibold w-full">
+        <Link to="/attendantdashboard/daily-report" onClick={toggleSidebar}>
+          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl hover:scale-95 hover:bg-green-300 hover:text-white duration-300">
+            Daily Report
+            <MenuBookOutlinedIcon fontSize='large'/>
+          </li>
+        </Link>
         <Link to="/attendantdashboard/make-entry" onClick={toggleSidebar}>
           <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl hover:scale-95 hover:bg-green-300 hover:text-white duration-300">
             Make Entry
@@ -32,13 +38,7 @@ const AttendantSidebar = ({ sidebarOpen, toggleSidebar }) => {
             Make Exit
             <InsertChartOutlinedRoundedIcon fontSize='large'/>
           </li>
-        </Link>
-        <Link to="/attendantdashboard/edit-booking" onClick={toggleSidebar}>
-          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl hover:scale-95 hover:bg-green-300 hover:text-white duration-300">
-            Edit Booking
-            <GroupsOutlinedIcon fontSize='large'/>
-          </li>
-        </Link>     
+        </Link>    
       </ul>
     </div>
   );

@@ -23,6 +23,16 @@ public class Booking
     private String transactionId;
     private String attendantPhoneNo;
 
+    private int amountPaid;
+
+    public int getAmountPaid() {
+        return amountPaid;
+    }
+
+    public void setAmountPaid(int amountPaid) {
+        this.amountPaid = amountPaid;
+    }
+
     public Booking(String paymentType, String vehicleNo, String vehicleType, String phoneNo) {
         this.paymentType = paymentType;
         this.vehicleNo = vehicleNo;

@@ -72,6 +72,7 @@ public class AttendantController
         booking.setParkingId(parkingId);
         booking.setInTime(LocalDateTime.now());
         booking.setOutTime(LocalDateTime.now());
+        booking.setAmountPaid(0);
         long transactionId = transactionIdSequenceService.generateSequence("transaction_sequence");
         booking.setTransactionId(String.valueOf(transactionId));
 //        System.out.println(booking.toString());
