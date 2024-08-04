@@ -7,8 +7,7 @@ import { addParking } from '../services/addParkingService';
 
 const AddParkingArea = () => {
   const [parkingData, setParkingData] = useState({
-    parkingId: "",
-    opId: "",
+    operatorId: "",
     title: "",
     costingType: "",
     description: "",
@@ -46,9 +45,6 @@ const AddParkingArea = () => {
     switch (name) {
       case "title":
         if (!value) error = "Title is required";
-        break;
-      case "parkingId":
-        if (!value) error = "Parking ID is required";
         break;
       case "description":
         if (!value) error = "Description is required";
@@ -90,7 +86,7 @@ const AddParkingArea = () => {
     const { name, value, type, checked } = e.target;
     
     if (["cost2wheeler", "cost4wheeler", "capacity2wheeler", "capacity4wheeler"].includes(name)) {
-      if (value < 0) return; // Prevent negative values
+      if (value < 0) return; 
     }
 
     setParkingData({
@@ -149,48 +145,35 @@ const AddParkingArea = () => {
             />
             {errors.title && <p className="text-red-500 mt-1 text-xs font-semibold pl-2">{errors.title}</p>}
           </div>
-          <div className="mb-4 w-1/2">
-            <TextInput
-              type="text"
-              label="Parking ID"
-              placeholder="Enter Parking ID"
-              required
-              value={parkingData.parkingId}
-              name="parkingId"
-              onChange={handleChange}
-              borderColor={getBorderColor('parkingId')}
-              error={errors.parkingId}
-            />
-            {errors.parkingId && <p className="text-red-500 mt-1 text-xs font-semibold pl-2">{errors.parkingId}</p>}
-          </div>
-        </div>
-        <div className="flex gap-10">
-          <div className="mb-4 w-1/4">
-            <label className="block mb-2 font-semibold">Costing Type</label>
-            <div className="flex items-center">
-              <input
-                type="radio"
-                id="fixed"
-                name="costingType"
-                value="fixed"
-                checked={parkingData.costingType === 'fixed'}
-                onChange={handleChange}
-                className={`mr-2 ${getBorderColor('costingType')}`}
-              />
-              <label htmlFor="fixed" className="mr-4">Fixed</label>
-              <input
-                type="radio"
-                id="hourly"
-                name="costingType"
-                value="hourly"
-                checked={parkingData.costingType === 'hourly'}
-                onChange={handleChange}
-                className={`mr-2 ${getBorderColor('costingType')}`}
-              />
-              <label htmlFor="hourly">Hourly</label>
+          <div className="mb-4 w-1/2 flex justify-center items-center">
+            <div>
+              <label className="block mb-2 font-semibold">Costing Type</label>
+              <div className="flex items-center">
+                <input
+                  type="radio"
+                  id="fixed"
+                  name="costingType"
+                  value="fixed"
+                  checked={parkingData.costingType === 'fixed'}
+                  onChange={handleChange}
+                  className={`mr-2 ${getBorderColor('costingType')}`}
+                />
+                <label htmlFor="fixed" className="mr-4">Fixed</label>
+                <input
+                  type="radio"
+                  id="hourly"
+                  name="costingType"
+                  value="hourly"
+                  checked={parkingData.costingType === 'hourly'}
+                  onChange={handleChange}
+                  className={`mr-2 ${getBorderColor('costingType')}`}
+                />
+                <label htmlFor="hourly">Hourly</label>
+              </div>
             </div>
           </div>
-          <div className="mb-4 w-2/4">
+        </div>
+        <div className="">
             <label className="block mb-2 font-semibold">Description</label>
             <textarea
               name="description"
@@ -200,7 +183,7 @@ const AddParkingArea = () => {
               required
             ></textarea>
             {errors.description && <p className="text-red-500 mt-1 text-xs font-semibold pl-2">{errors.description}</p>}
-          </div>
+          
         </div>
         <div className="grid grid-cols-2 gap-10">
           <div>

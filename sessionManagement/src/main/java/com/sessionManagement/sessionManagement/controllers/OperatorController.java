@@ -4,6 +4,7 @@ package com.sessionManagement.sessionManagement.controllers;
 import com.sessionManagement.sessionManagement.documents.*;
 import com.sessionManagement.sessionManagement.repo.*;
 import com.sessionManagement.sessionManagement.services.BookingService;
+import com.sessionManagement.sessionManagement.services.ParkingIdSequenceService;
 import com.sessionManagement.sessionManagement.services.ParkingService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,21 +29,25 @@ public class OperatorController
     private BookingService bookingService;
 
     @Autowired
-    OperatorRepo operatorRepo;
+    private OperatorRepo operatorRepo;
 
     @Autowired
-    AttendantRepo attendantRepo;
+    private AttendantRepo attendantRepo;
 
     @Autowired
-    RoleRepo roleRepo;
+    private RoleRepo roleRepo;
 
     @Autowired
-    ParkingRepo parkingRepo;
+    private ParkingRepo parkingRepo;
 
     @Autowired
-    PasswordEncoder encoder;
+    private PasswordEncoder encoder;
+
     @Autowired
-    BookingRepo bookingRepo;
+    private BookingRepo bookingRepo;
+
+    @Autowired
+    private ParkingIdSequenceService parkingIdSequenceService;
 
     @PostMapping("/addAttendant")
     public ResponseEntity<?> addAttendant(@Valid @RequestBody Attendant attendant) {
@@ -75,7 +80,38 @@ public class OperatorController
     }
 
     @PostMapping("/addParking")
-    public ResponseEntity<?> addParking(@Valid @RequestBody Parking parking) {
+    public ResponseEntity<?> addParking(@Valid
+                                        @RequestParam String operatorId,
+                                        @RequestParam String title,
+                                        @RequestParam String costingType,
+                                        @RequestParam String description,
+                                        @RequestParam int cost2wheeler,
+                                        @RequestParam int cost4wheeler,
+                                        @RequestParam String latitude,
+                                        @RequestParam String longitude,
+                                        @RequestParam boolean availability,
+                                        @RequestParam int capacity2wheeler,
+                                        @RequestParam int capacity4wheeler,
+                                        @RequestParam String address,
+                                        @RequestParam String pinCode) {
+
+        Parking parking = new Parking();
+
+        parking.setParkingId(parkingIdSequenceService.generateSequence("parkingid_sequence"));
+        parking.setOperatorId(operatorId);
+        parking.setTitle(title);
+        parking.setCostingType(costingType);
+        parking.setDescription(description);
+        parking.setCost2wheeler(cost2wheeler);
+        parking.setCost4wheeler(cost4wheeler);
+        parking.setLatitude(latitude);
+        parking.setLongitude(longitude);
+        parking.setAvailability(availability);
+        parking.setCapacity2wheeler(capacity2wheeler);
+        parking.setCapacity4wheeler(capacity4wheeler);
+        parking.setAddress(address);
+        parking.setPinCode(pinCode);
+
         if (parkingRepo.existsById(parking.getParkingId()) ||
                 parkingRepo.existsByTitle(parking.getTitle())
         ) {
@@ -85,6 +121,7 @@ public class OperatorController
 
         if (!errors.isEmpty())
             return ResponseEntity.badRequest().body(errors);
+
         return ResponseEntity.ok(parkingRepo.save(parking));
     }
 
