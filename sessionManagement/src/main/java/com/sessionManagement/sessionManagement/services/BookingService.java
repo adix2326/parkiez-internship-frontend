@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookingService
@@ -29,5 +30,12 @@ public class BookingService
         List<Booking> bookings = bookingRepo.find2WheelerBookingsByParkingIdAndDateRange(parkingId, startOfDay, endOfDay);
 
         return bookings.size();
+    }
+
+    public Optional<Booking> findBookingWithSameInAndOutTime(String vehicleNo) {
+        Optional<Booking> bookings = bookingRepo.findBookingsByVehicleNo(vehicleNo);
+        return bookings.stream()
+                .filter(booking -> booking.getInTime().equals(booking.getOutTime()))
+                .findFirst();
     }
 }

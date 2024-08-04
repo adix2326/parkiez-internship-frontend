@@ -146,5 +146,7 @@ public class Booking
 //    {
 //        return inTime.toLocalTime();
 //    }
+public Booking() {
+}
 
 }

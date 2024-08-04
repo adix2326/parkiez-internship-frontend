@@ -88,7 +88,9 @@ public class AttendantController
         System.out.println("exitParking method called with vehicleNo: " + vehicleNo);
 
         // Fetch the booking details using the vehicle number
-        Optional<Booking> bookingOpt = bookingRepo.findBookingWithEqualInAndOutTime(vehicleNo);
+        Optional<Booking> bookingOpt = bookingRepo.findBookingsByVehicleNo(vehicleNo);
+
+
         System.out.println("Booking found: " + bookingOpt);
 
         if (!bookingOpt.isPresent()) {
