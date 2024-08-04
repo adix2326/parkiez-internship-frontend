@@ -1,7 +1,6 @@
 package com.sessionManagement.sessionManagement.repo;
 
 import com.sessionManagement.sessionManagement.documents.Booking;
-import org.springframework.data.mongodb.core.annotation.Collation;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 
@@ -11,13 +10,12 @@ import java.util.Optional;
 
 public interface BookingRepo extends MongoRepository<Booking, String>
 {
-    @Query("{ 'vehicleNo': ?0, 'inTime': { $eq: 'outTime' } }")
-    Optional<Booking> findBookingWithEqualInAndOutTime(String vehicleNo);
+    @Query("{ 'vehicleNo': ?0 }")
+    Optional<Booking> findBookingsByVehicleNo(String vehicleNo);
 
-
-    @Query("{ 'vehicleType': 'four wheeler', 'inTime': {$eq: 'outTime'}, 'parkingId': ?0 }")
+    @Query("{ 'vehicleType': 'four wheeler', 'outTime': null, 'parkingId': ?0 }")
     long countParkedFourWheelers(String parkingId);
-    @Query("{ 'vehicleType': 'two wheeler', 'inTime': {$eq: 'outTime'}, 'parkingId': ?0 }")
+    @Query("{ 'vehicleType': 'two wheeler', 'outTime': null, 'parkingId': ?0 }")
     long countParkedTwoWheelers(String parkingId);
 
     @Query("{ 'parkingId': ?0, 'vheicleType': '4Wheeler', 'inTime': { $gte: ?1, $lte: ?2 } }")
