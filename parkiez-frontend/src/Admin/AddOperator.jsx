@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 
 const AddOperator = () => {
   const [operatorData, setOperatorData] = useState({
-    operatorId: "",
+    // operatorId: "",
     name: "",
     phoneNo: "",
     password: "",
@@ -32,7 +32,7 @@ const AddOperator = () => {
     <div className="bg-gray-100 p-6 rounded-xl w-full flex flex-col gap-5">
       <h3 className="text-xl font-bold mb-4 ">Add Operator</h3>
       <form className="bg-white p-5 rounded-lg flex flex-col gap-5 shadow-md" onSubmit={handleOperatorSubmit}>
-        <TextInput
+        {/* <TextInput
           type="text"
           label="Operator ID"
           placeholder="Enter operator ID"
@@ -40,7 +40,7 @@ const AddOperator = () => {
           value={operatorData.operatorId}
           name="operatorId"
           onChange={handleOperatorChange}
-        />
+        /> */}
         <TextInput
           type="text"
           label="Name"

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from "./AdminSidebar";
+import AdminSidebar from "./AdminSidebar";
 import Header from "../components/DashboardHeader";
 import AddOperator from "./AddOperator";
 import authService from "../services/auth.service";
@@ -44,13 +44,12 @@ const AdminDashboard = () => {
     <div className="h-screen flex flex-col relative">
       <Header toggleSidebar={toggleSidebar} />
       <div className="flex flex-1 overflow-hidden">
-        <Sidebar
+        <AdminSidebar
           sidebarOpen={sidebarOpen}
           toggleSidebar={toggleSidebar}
           onAddOperatorClick={handleAddOperatorClick}
         />
         <div className="flex-1 flex flex-col p-5">
-          {/* <h2 className="text-2xl font-bold mb-6">Welcome to the Admin Dashboard</h2> */}
           {showAddOperator && <AddOperator />}
         </div>
       </div>
