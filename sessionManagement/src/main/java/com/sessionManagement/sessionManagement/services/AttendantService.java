@@ -2,9 +2,13 @@ package com.sessionManagement.sessionManagement.services;
 
 
 import com.sessionManagement.sessionManagement.documents.Attendant;
+import com.sessionManagement.sessionManagement.documents.Operators;
 import com.sessionManagement.sessionManagement.repo.AttendantRepo;
+import com.sessionManagement.sessionManagement.repo.OperatorRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class AttendantService
@@ -12,6 +16,9 @@ public class AttendantService
     @Autowired
     private AttendantRepo attendantRepo;
 
+
+    @Autowired
+    private OperatorRepo operatorRepo ;
     public String registerAttendant(Attendant attendant)
     {
         try
@@ -36,6 +43,23 @@ public class AttendantService
     void initRolesAndAttendant()
     {
 
+    }
+
+    public String findusernameByPhoneNo(String phoneNo) {
+        // Search in Attendant collection
+        Optional<Attendant> attendantOptional = attendantRepo.findByPhoneNo(phoneNo);
+        if (attendantOptional.isPresent()) {
+            return attendantOptional.get().getName();
+        }
+
+        // Search in Operators collection
+        Optional<Operators> operatorsOptional = operatorRepo.findByPhoneNo(phoneNo);
+        if (operatorsOptional.isPresent()) {
+            return operatorsOptional.get().getName();
+        }
+
+        // If the phone number is not found in any collection
+        return null;
     }
 
 }

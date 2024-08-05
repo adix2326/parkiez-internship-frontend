@@ -10,7 +10,7 @@ public interface AttendantRepo extends MongoRepository<Attendant, String>
 {
     boolean existsByPhoneNo(String phoneNo);
 
-
+    Optional<Attendant> findusernameByPhoneNo(String phoneNo);
     boolean existsByUserId(String userId);
     @Query("{'phoneNo': ?0}")
     Optional<Attendant> findByPhoneNo(String phoneNo);

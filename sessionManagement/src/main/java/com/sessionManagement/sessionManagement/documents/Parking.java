@@ -16,8 +16,8 @@ public class Parking
     private String description;
     private int cost2wheeler;
     private int cost4wheeler;
-    private long latitude;
-    private long longitude;
+    private String latitude;
+    private String longitude;
     private boolean availability;
     private int capacity2wheeler;
     private int capacity4wheeler;
@@ -26,7 +26,7 @@ public class Parking
     private String address;
     private String pinCode;
 
-    public Parking(String parkingId, String operatorId, String title, String costingType, String description, int cost2wheeler, int cost4wheeler, long latitude, long longitude, boolean availability, int capacity2wheeler, int capacity4wheeler, int remaining2wheeler, int remaining4wheeler, String address, String pinCode) {
+    public Parking(String parkingId, String operatorId, String title, String costingType, String description, int cost2wheeler, int cost4wheeler, String latitude, String longitude, boolean availability, int capacity2wheeler, int capacity4wheeler, int remaining2wheeler, int remaining4wheeler, String address, String pinCode) {
         this.parkingId = parkingId;
         this.operatorId = operatorId;
         this.title = title;
@@ -101,19 +101,19 @@ public class Parking
         this.cost4wheeler = cost4wheeler;
     }
 
-    public long getLatitude() {
+    public String getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(long latitude) {
+    public void setLatitude(String latitude) {
         this.latitude = latitude;
     }
 
-    public long getLongitude() {
+    public String getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(long longitude) {
+    public void setLongitude(String longitude) {
         this.longitude = longitude;
     }
 
