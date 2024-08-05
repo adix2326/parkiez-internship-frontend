@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from 'react-router-dom';
+import axios from "axios";
 import ParkiezLogo from '../assets/parkiez_logo.png';
 import authService from '../services/auth.service';
+import authHeader from "../services/auth-header";
 import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import ChangeCircleOutlinedIcon from '@mui/icons-material/ChangeCircleOutlined';
@@ -10,19 +12,32 @@ import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 const Header = ({ toggleSidebar }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);  
   const [currentUser, setCurrentUser] = useState(null);
+  const [displayName, setDisplayName] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
-      const currentUser = JSON.parse(localStorage.getItem('user'));
-      if (!currentUser) {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (!user) {
         navigate("/");
       } else {
-        setCurrentUser(currentUser);
+        setCurrentUser(user); 
+        try {
+          const response = await axios.get(
+            'http://localhost:8081/api/operator/getUsername',
+            { 
+              params: { phoneNo: user.username }, 
+              headers: authHeader() 
+            }
+          );          
+          setDisplayName(response.data);
+        } catch (error) {
+          console.error('Error fetching name:', error);
+        }
       }
     };
     fetchUser();
-  }, []);
+  }, [navigate]);
 
   const handleLogout = () => {
     authService.logout();
@@ -42,7 +57,7 @@ const Header = ({ toggleSidebar }) => {
       <h1 className="text-2xl text-green-500 font-bold">Dashboard</h1>
       <div className="relative">
         <div className="flex items-center gap-3">
-          {currentUser && <h3 className="text-xl text-green-600">{currentUser.username}</h3>}
+          {displayName && <h3 className="text-xl text-green-600">{displayName}</h3>}
           <button onClick={toggleDropdown} className="text-gray-800 hover:text-gray-900">
             <span className='text-green-500 w-12 h-12 border-2 border-green-500 rounded-full flex justify-center items-center gap-2 hover:scale-105 hover:text-green-300 hover:border-green-300 duration-300'>
               <AccountCircleRoundedIcon fontSize='large'/>

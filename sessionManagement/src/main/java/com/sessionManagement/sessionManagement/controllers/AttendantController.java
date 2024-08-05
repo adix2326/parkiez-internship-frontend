@@ -6,7 +6,6 @@ import com.sessionManagement.sessionManagement.documents.Parking;
 import com.sessionManagement.sessionManagement.repo.AttendantRepo;
 import com.sessionManagement.sessionManagement.repo.BookingRepo;
 import com.sessionManagement.sessionManagement.repo.ParkingRepo;
-import com.sessionManagement.sessionManagement.repo.TransactionIdSequenceRepo;
 import com.sessionManagement.sessionManagement.services.AttendantService;
 import com.sessionManagement.sessionManagement.services.BookingService;
 import com.sessionManagement.sessionManagement.services.TransactionIdSequenceService;
@@ -18,11 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
-
-import static com.sessionManagement.sessionManagement.controllers.AdminController.getErrorsParking;
 
 @RestController
 @RequestMapping("api/attendant")

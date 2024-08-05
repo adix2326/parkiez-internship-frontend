@@ -3,6 +3,7 @@ package com.sessionManagement.sessionManagement.controllers;
 
 import com.sessionManagement.sessionManagement.documents.*;
 import com.sessionManagement.sessionManagement.repo.*;
+import com.sessionManagement.sessionManagement.services.AttendantService;
 import com.sessionManagement.sessionManagement.services.BookingService;
 import com.sessionManagement.sessionManagement.services.ParkingIdSequenceService;
 import com.sessionManagement.sessionManagement.services.ParkingService;
@@ -48,6 +49,9 @@ public class OperatorController
 
     @Autowired
     private ParkingIdSequenceService parkingIdSequenceService;
+
+    @Autowired
+    private AttendantService attendantService;
 
     @PostMapping("/addAttendant")
     public ResponseEntity<?> addAttendant(@Valid @RequestBody Attendant attendant) {
@@ -186,5 +190,17 @@ public class OperatorController
     @GetMapping("/countTwoWheelerToday")
     public long countTwoWheelerBookingsToday(@RequestParam String parkingId) {
         return bookingService.countTwoWheelerBookingsToday(parkingId);
+    }
+
+    @GetMapping("/getUsername")
+    public String getUsername(@RequestParam String phoneNo)
+    {
+//        System.out.println(phoneNo);
+        String username = attendantService.findUsernameByPhoneNo(phoneNo);
+        if (username != null) {
+            return username;
+        } else {
+            return "Username not found for the provided phone number.";
+        }
     }
 }

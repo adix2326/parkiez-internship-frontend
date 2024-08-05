@@ -1,7 +1,7 @@
 package com.sessionManagement.sessionManagement.services;
 
-import com.sessionManagement.sessionManagement.documents.OperatorIdSequence;
-import com.sessionManagement.sessionManagement.repo.ParkingIdSequenceRepo;
+import com.sessionManagement.sessionManagement.documents.Sequences;
+import com.sessionManagement.sessionManagement.repo.SequencesRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoOperations;
@@ -16,14 +16,14 @@ public class ParkingIdSequenceService {
     private MongoOperations mongoOperations;
 
     @Autowired
-    private ParkingIdSequenceRepo parkingIdSequenceRepo;
+    private SequencesRepo sequencesRepo;
 
     public String generateSequence(String seqName) {
         Query query = new Query(Criteria.where("_id").is(seqName));
         Update update = new Update().inc("seq", 1);
         FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true).upsert(true);
 
-        OperatorIdSequence sequence = mongoOperations.findAndModify(query, update, options, OperatorIdSequence.class);
+        Sequences sequence = mongoOperations.findAndModify(query, update, options, Sequences.class);
         String parkingid = sequence != null ? "Parking" + sequence.getSeq() : "Parking" + 1;
         System.out.println(parkingid);
         return parkingid;
