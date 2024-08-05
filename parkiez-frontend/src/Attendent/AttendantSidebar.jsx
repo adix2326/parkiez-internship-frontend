@@ -1,19 +1,9 @@
-// src/Attendent/AttendantSidebar.jsx
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
-import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import InsertChartOutlinedRoundedIcon from '@mui/icons-material/InsertChartOutlinedRounded';
-import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 
 const AttendantSidebar = ({ sidebarOpen, toggleSidebar }) => {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    navigate('/attendantlogin');
-  };
 
   return (
     <div className={`fixed inset-0 z-50 transform transition-transform duration-300 ease-in-out bg-green-500 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} sm:relative sm:translate-x-0 sm:w-64`}>

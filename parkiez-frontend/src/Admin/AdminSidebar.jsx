@@ -1,8 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import MenuBookOutlinedIcon from "@mui/icons-material/MenuBookOutlined";
-import InsertChartOutlinedRoundedIcon from "@mui/icons-material/InsertChartOutlinedRounded";
-import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import PersonAddOutlinedIcon from "@mui/icons-material/PersonAddOutlined";
 
 const Sidebar = ({ sidebarOpen, toggleSidebar, onAddOperatorClick }) => {
@@ -19,25 +16,7 @@ const Sidebar = ({ sidebarOpen, toggleSidebar, onAddOperatorClick }) => {
       >
         ✕
       </button>
-      <ul className="absolute top-10 grid grid-col p-5 text-green-500 gap-5 text-2xl font-semibold w-full">
-        <Link to="/admindashboard/daily-report" onClick={toggleSidebar}>
-          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl hover:scale-95 hover:bg-green-300 hover:text-white duration-300">
-            Daily Report
-            <MenuBookOutlinedIcon fontSize="large" />
-          </li>
-        </Link>
-        <Link to="/admindashboard/analytics" onClick={toggleSidebar}>
-          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl hover:scale-95 hover:bg-green-300 hover:text-white duration-300">
-            Analytics
-            <InsertChartOutlinedRoundedIcon fontSize="large" />
-          </li>
-        </Link>
-        <Link to="/admindashboard/attendants" onClick={toggleSidebar}>
-          <li className="bg-white p-3 flex justify-center items-center gap-4 rounded-xl hover:scale-95 hover:bg-green-300 hover:text-white duration-300">
-            Attendants
-            <GroupsOutlinedIcon fontSize="large" />
-          </li>
-        </Link>
+      <ul className="absolute top-10 grid grid-col p-5 text-green-500 gap-5 text-2xl font-semibold w-full">        
         <Link
           to="#"
           onClick={() => {

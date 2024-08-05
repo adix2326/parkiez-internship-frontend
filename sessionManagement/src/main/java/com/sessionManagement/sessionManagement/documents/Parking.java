@@ -26,8 +26,11 @@ public class Parking
     private String address;
     private String pinCode;
 
-    public Parking(String parkingId, String operatorId, String title, String costingType, String description, int cost2wheeler, int cost4wheeler, String latitude, String longitude, boolean availability, int capacity2wheeler, int capacity4wheeler, int remaining2wheeler, int remaining4wheeler, String address, String pinCode) {
-        this.parkingId = parkingId;
+    public Parking(){
+
+    }
+
+    public Parking(String operatorId, String title, String costingType, String description, int cost2wheeler, int cost4wheeler, String latitude, String longitude, boolean availability, int capacity2wheeler, int capacity4wheeler, int remaining2wheeler, int remaining4wheeler, String address, String pinCode) {
         this.operatorId = operatorId;
         this.title = title;
         this.costingType = costingType;
@@ -171,9 +174,6 @@ public class Parking
 
     public void setPinCode(String pinCode) {
         this.pinCode = pinCode;
-    }
-
-    public Parking() {
     }
 
 

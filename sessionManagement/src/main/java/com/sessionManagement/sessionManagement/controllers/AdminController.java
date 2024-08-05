@@ -8,6 +8,7 @@ import com.sessionManagement.sessionManagement.repo.AdminRepo;
 import com.sessionManagement.sessionManagement.repo.OperatorRepo;
 import com.sessionManagement.sessionManagement.repo.ParkingRepo;
 import com.sessionManagement.sessionManagement.repo.RoleRepo;
+import com.sessionManagement.sessionManagement.services.OperatorIdSequenceService;
 import com.sessionManagement.sessionManagement.services.UserDetails.UserDetailsService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -53,10 +54,13 @@ public class AdminController
     private RoleRepo roleRepo;
 
     @Autowired
-    PasswordEncoder encoder;
+    private PasswordEncoder encoder;
 
     @Autowired
-    ParkingRepo parkingRepo;
+    private ParkingRepo parkingRepo;
+
+    @Autowired
+    private OperatorIdSequenceService operatorIdSequenceService;
 
 //    @PostMapping("/addParking")
 //    public ResponseEntity<?> addParking(@Valid @RequestBody Parking parking) {
@@ -102,6 +106,7 @@ public class AdminController
         roles.add(adminRole);
         operator.setRoles(roles);
         operator.setPassword(encoder.encode(operator.getPassword()));
+        operator.setOperatorId(operatorIdSequenceService.generateSequence("operatorid_sequence"));
         return ResponseEntity.ok(operatorRepo.save(operator));
     }
 
