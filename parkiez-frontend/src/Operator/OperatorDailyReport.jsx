@@ -110,20 +110,6 @@ const DailyReport = () => {
     setSelectedAttendantId(attendantId);
   };
 
-  // const fetchCarsCurrentlyParked = async (attendantId) => {
-  //   try {
-  //     const response = await fetch(`http://localhost:8080/api/operator/carsCurrentlyParked?parkingId=${attendantId}`);
-  //     const data = await response.json();
-  //     setCarsCurrentlyParked(data);
-  //   } catch (error) {
-  //     console.error('Error fetching cars currently parked:', error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchCarsCurrentlyParked(selectedAttendantId);
-  // }, [selectedAttendantId]);
-
   let totalCarsCurrentlyParked = data.reduce(
     (total, attendant) => total + attendant.carsCurrentlyParked,
     0

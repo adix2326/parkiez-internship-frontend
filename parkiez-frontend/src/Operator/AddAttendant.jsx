@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TextInput from "../components/textinput";
 import CustomBtn from "../components/CustomBtn";
 import { addAttendant } from '../services/addAttendantService';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import authHeader from "../services/auth-header";
 
 const AddAttendant = () => {
   const navigate = useNavigate();
@@ -15,7 +17,34 @@ const AddAttendant = () => {
     password: ''
   });
 
+  const [currentUser, setCurrentUser] = useState(null);
   const [errors, setErrors] = useState({});
+  const [parkings, setparkings] = useState([]);
+
+  useEffect(() => {
+    const getparkings = async () => {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (!user) {
+        navigate("/");
+      } else {
+        setCurrentUser(user); 
+        try {
+          const response = await axios.get(
+            'http://localhost:8081/api/operator/getParkings',
+            { 
+              params: { phoneNo: user.username }, 
+              headers: authHeader() 
+            }
+          );          
+          setparkings(response.data);
+        } catch (error) {
+          console.error('Failed to fetch parking areas', error);
+        }
+      }
+    };
+
+    getparkings();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -155,17 +184,20 @@ const AddAttendant = () => {
           )}
         </div>
         <div>
-          <TextInput
-            type="text"
-            label="Parking Id"
-            placeholder="Enter Parking Id"
-            required
-            value={attendantData.parkingId}
+        <label className="block text-sm font-medium text-gray-700">Parking Area</label>
+          <select
             name="parkingId"
+            value={attendantData.parkingId}
             onChange={handleChange}
-            borderColor={getBorderColor('parkingId')}
-            error={errors.parkingId}
-          />
+            className={`mt-1 block w-full pl-3 pr-10 py-2 text-base border ${getBorderColor('parkingId')} focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md`}
+          >
+            <option value="">Select Parking Area</option>
+            {parkings.map(parking => ( 
+              <option key={parking.parkingId} value={parking.parkingId}> 
+                {parking.title} (ID: {parking.parkingId}) 
+              </option> 
+            ))} 
+          </select>
           {errors.parkingId && (
             <p className="text-red-500 mt-1 text-xs font-semibold pl-2">
               {errors.parkingId}

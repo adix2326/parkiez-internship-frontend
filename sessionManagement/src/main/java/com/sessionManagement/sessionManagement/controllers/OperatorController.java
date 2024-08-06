@@ -3,10 +3,7 @@ package com.sessionManagement.sessionManagement.controllers;
 
 import com.sessionManagement.sessionManagement.documents.*;
 import com.sessionManagement.sessionManagement.repo.*;
-import com.sessionManagement.sessionManagement.services.AttendantService;
-import com.sessionManagement.sessionManagement.services.BookingService;
-import com.sessionManagement.sessionManagement.services.ParkingIdSequenceService;
-import com.sessionManagement.sessionManagement.services.ParkingService;
+import com.sessionManagement.sessionManagement.services.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +11,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static com.sessionManagement.sessionManagement.controllers.AdminController.getErrorsParking;
 
@@ -31,6 +25,9 @@ public class OperatorController
 
     @Autowired
     private OperatorRepo operatorRepo;
+
+    @Autowired
+    private OperatorService operatorService;
 
     @Autowired
     private AttendantRepo attendantRepo;
@@ -192,6 +189,7 @@ public class OperatorController
         return bookingService.countTwoWheelerBookingsToday(parkingId);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_ATTENDANT')")
     @GetMapping("/getUsername")
     public String getUsername(@RequestParam String phoneNo)
     {
@@ -203,4 +201,16 @@ public class OperatorController
             return "Username not found for the provided phone number.";
         }
     }
+
+    @GetMapping("/getParkings")
+    public ResponseEntity<List<Parking>> getParkings(@RequestParam String phoneNo) {
+        String operatorId = operatorService.getOperatorIdByPhoneNo(phoneNo);
+        if (operatorId == null) {
+            return ResponseEntity.badRequest().body(Collections.emptyList());
+        }
+
+        List<Parking> parkings = parkingRepo.findByOperatorId(operatorId);
+        return ResponseEntity.ok(parkings);
+    }
+
 }

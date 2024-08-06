@@ -75,7 +75,7 @@ const MakeExit = () => {
     try {
       console.log(formData);
       await makeExit(formData);
-      navigate('/dashboard');
+      navigate('/attendantdashboard');
       toast.success("Exit Done !!")
     } catch (error) {
       setErrors({ submit: error.message || 'An error occurred while processing your request.' });
