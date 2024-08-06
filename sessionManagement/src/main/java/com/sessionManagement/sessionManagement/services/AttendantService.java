@@ -23,7 +23,7 @@ public class AttendantService {
             if (attendantRepo.existsByPhoneNo(attendant.getPhoneNo())) {
                 return "Attendant already exists : " + attendant.getPhoneNo();
             } else {
-                System.out.println("In else");
+//                System.out.println("In else");
                 attendantRepo.save(attendant);
                 return "registered attendant : " + attendant.getName();
             }

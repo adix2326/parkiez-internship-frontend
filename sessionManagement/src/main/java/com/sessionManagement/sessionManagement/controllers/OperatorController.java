@@ -56,7 +56,7 @@ public class OperatorController
             return ResponseEntity.badRequest().body("Attendant with provided phone number already exists");
         }
 
-        System.out.println(attendant.toString());
+//        System.out.println(attendant.toString());
 
         Map<String, String> errors = getErrors(attendant);
         if (!errors.isEmpty()) {
@@ -208,9 +208,7 @@ public class OperatorController
         if (operatorId == null) {
             return ResponseEntity.badRequest().body(Collections.emptyList());
         }
-
-        List<Parking> parkings = parkingRepo.findByOperatorId(operatorId);
-        return ResponseEntity.ok(parkings);
+        return ResponseEntity.ok(parkingRepo.findByOperatorId(operatorId));
     }
 
 }

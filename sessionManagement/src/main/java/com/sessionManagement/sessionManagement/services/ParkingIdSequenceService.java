@@ -24,8 +24,7 @@ public class ParkingIdSequenceService {
         FindAndModifyOptions options = new FindAndModifyOptions().returnNew(true).upsert(true);
 
         Sequences sequence = mongoOperations.findAndModify(query, update, options, Sequences.class);
-        String parkingid = sequence != null ? "Parking" + sequence.getSeq() : "Parking" + 1;
-        System.out.println(parkingid);
-        return parkingid;
+
+        return sequence != null ? "Parking" + sequence.getSeq() : "Parking" + 1;
     }
 }

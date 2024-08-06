@@ -74,19 +74,14 @@ public class AttendantController
         booking.setAmountPaid(0);
         long transactionId = transactionIdSequenceService.generateSequence("transaction_sequence");
         booking.setTransactionId(String.valueOf(transactionId));
-//        System.out.println(booking.toString());
+
         return ResponseEntity.ok(bookingRepo.save(booking));
     }
 
     @PostMapping("/exit")
     public ResponseEntity<?> exitParking(@RequestParam String vehicleNo) {
-        System.out.println("exitParking method called with vehicleNo: " + vehicleNo);
 
-        // Fetch the booking details using the vehicle number
         Optional<Booking> bookingOpt = bookingRepo.findBookingsByVehicleNo(vehicleNo);
-
-
-        System.out.println("Booking found: " + bookingOpt);
 
         if (!bookingOpt.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -98,9 +93,7 @@ public class AttendantController
 
         // Fetch the parking details using the parking ID from booking
         String parkingId = booking.getParkingId();
-        System.out.println("Parking ID: " + parkingId);
         Optional<Parking> parkingOpt = parkingRepo.findById(parkingId);
-        System.out.println("Parking found: " + parkingOpt);
 
         if (!parkingOpt.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -123,9 +116,9 @@ public class AttendantController
             int hourlyRate = booking.getVehicleType().equalsIgnoreCase("2wheeler") ?
                     parking.getCost2wheeler() : parking.getCost4wheeler();
             amountPaid = (int) ((durationMinutes / 60.0) * hourlyRate);
-            System.out.println("Duration in Minutes: " + durationMinutes);
-            System.out.println("Hourly Rate: " + hourlyRate);
-            System.out.println("Amount Paid: " + amountPaid);
+//            System.out.println("Duration in Minutes: " + durationMinutes);
+//            System.out.println("Hourly Rate: " + hourlyRate);
+//            System.out.println("Amount Paid: " + amountPaid);
         }
 
         booking.setAmountPaid(amountPaid);
