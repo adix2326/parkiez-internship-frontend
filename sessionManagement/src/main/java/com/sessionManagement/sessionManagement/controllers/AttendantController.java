@@ -11,13 +11,14 @@ import com.sessionManagement.sessionManagement.services.BookingService;
 import com.sessionManagement.sessionManagement.services.TransactionIdSequenceService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("api/attendant")
@@ -39,6 +40,7 @@ public class AttendantController
 
     @Autowired
     private AttendantRepo attendantRepo;
+
     @Autowired
     private TransactionIdSequenceService transactionIdSequenceService;
 
@@ -46,6 +48,30 @@ public class AttendantController
     public  String forAttendantTest()
     {
         return "You have access(Attendant's)";
+    }
+
+    @GetMapping("/currentlyParkedVehicles")
+    public ResponseEntity<?> currentlyParked2Wheelers(@RequestParam String phoneNo){
+        HashMap<String, Long> pair = new HashMap<>();
+        Optional<Attendant> attendant = attendantRepo.findByPhoneNo(phoneNo);
+        if(attendant.isPresent()){
+            Attendant attendant1  = attendant.get();
+            if (!parkingRepo.existsById(attendant1.getParkingId())) {
+                return ResponseEntity.badRequest().body("Parking with specified parking ID does not exist");
+            }
+            if (!attendantRepo.existsByPhoneNo(phoneNo)){
+                return ResponseEntity.badRequest().body("Attendant with specified phone number does not exist");
+            }
+
+            String parkingId = attendant1.getParkingId();
+            System.out.println(parkingId);
+            long totalParkedFourWheelers = bookingRepo.countParkedFourWheelers(parkingId);
+            long totalParkedTwoWheelers = bookingRepo.countParkedTwoWheelers(parkingId);
+            pair.put("4w", totalParkedFourWheelers);
+            pair.put("2w", totalParkedTwoWheelers);
+        }
+
+        return ResponseEntity.ok(pair);
     }
 
     @PostMapping("/addBooking")

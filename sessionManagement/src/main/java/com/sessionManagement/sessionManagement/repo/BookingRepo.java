@@ -13,7 +13,7 @@ public interface BookingRepo extends MongoRepository<Booking, String>
     @Query("{ 'vehicleNo': ?0 }")
     Optional<Booking> findBookingsByVehicleNo(String vehicleNo);
 
-    @Query("{ 'vehicleType': 'four wheeler', 'outTime': null, 'parkingId': ?0 }")
+    @Query("{ 'vehicleType': 'four wheeler', 'parkingId': ?0, $expr: { $eq: ['$outTime', '$inTime'] } }")
     long countParkedFourWheelers(String parkingId);
     @Query("{ 'vehicleType': 'two wheeler', 'outTime': null, 'parkingId': ?0 }")
     long countParkedTwoWheelers(String parkingId);

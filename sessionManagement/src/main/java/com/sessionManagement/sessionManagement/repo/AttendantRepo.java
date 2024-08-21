@@ -15,6 +15,7 @@ public interface AttendantRepo extends MongoRepository<Attendant, String> {
     @Query("{'phoneNo': ?0}")
     Optional<Attendant> findByPhoneNo(String phoneNo);
 
+
     // Removed incorrect method (as it pertains to Operators)
     // Optional<Operators> findusernameByPhoneNo(String phoneNo);
 }
