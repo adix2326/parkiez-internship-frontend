@@ -65,8 +65,16 @@ public class AttendantController
 
             String parkingId = attendant1.getParkingId();
             System.out.println(parkingId);
-            long totalParkedFourWheelers = bookingRepo.countParkedFourWheelers(parkingId);
-            long totalParkedTwoWheelers = bookingRepo.countParkedTwoWheelers(parkingId);
+            long totalParkedFourWheelers = -11;
+            long totalParkedTwoWheelers = -11;
+            List<Booking> bookings = bookingRepo.findAllByParkingIdAndVehicleTypeAndOutTimeIsNull(parkingId, "4wheeler");
+//            System.out.println(bookings);
+            totalParkedFourWheelers = bookings.size();
+            List<Booking> bookings2 = bookingRepo.findAllByParkingIdAndVehicleTypeAndOutTimeIsNull(parkingId, "2wheeler");
+//            System.out.println(bookings2);
+            totalParkedTwoWheelers = bookings2.size();
+//            long totalParkedFourWheelers = bookingRepo.countParkedFourWheelers(parkingId);
+//            long totalParkedTwoWheelers = bookingRepo.countParkedTwoWheelers(parkingId);
             pair.put("4w", totalParkedFourWheelers);
             pair.put("2w", totalParkedTwoWheelers);
         }
@@ -80,12 +88,18 @@ public class AttendantController
                                                @RequestParam String vehicleType,
                                                @RequestParam String phoneNo,
                                                @RequestParam String attendantPhoneNo) {
-        System.out.println("hi dhamale");
+//        System.out.println("hi dhamale");
         Optional<Attendant> attendantOpt = attendantRepo.findByPhoneNo(attendantPhoneNo);
 
         if (!attendantOpt.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body("Attendant not found with phone number: " + attendantPhoneNo);
+        }
+
+        if( bookingRepo.existsByVehicleNoAndOutTimeIsNull(vehicleNo) )
+        {
+            System.out.println("in if");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Vehicle Already parked");
         }
 
         Attendant attendant = attendantOpt.get();
@@ -96,7 +110,7 @@ public class AttendantController
 
         booking.setParkingId(parkingId);
         booking.setInTime(LocalDateTime.now());
-        booking.setOutTime(LocalDateTime.now());
+//        booking.setOutTime(LocalDateTime.now());
         booking.setAmountPaid(0);
         long transactionId = transactionIdSequenceService.generateSequence("transaction_sequence");
         booking.setTransactionId(String.valueOf(transactionId));
@@ -107,14 +121,18 @@ public class AttendantController
     @PostMapping("/exit")
     public ResponseEntity<?> exitParking(@RequestParam String vehicleNo) {
 
-        Optional<Booking> bookingOpt = bookingRepo.findBookingsByVehicleNo(vehicleNo);
-
-        if (!bookingOpt.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Booking not found with vehicle number: " + vehicleNo);
+        List<Booking> bookings = bookingRepo.findAllBookingByVehicleNoAndOutTimeIsNull(vehicleNo);
+        if(bookings.size()>1)
+        {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Check database entries, contact Administrator immediately");
         }
+        if(bookings.size() == 0)
+        {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No such parked vehicle");
+        }
+        Booking booking = bookings.get(0);
+//        Optional<Booking> bookingOpt = bookingRepo.findBookingsByVehicleNo(vehicleNo);
 
-        Booking booking = bookingOpt.get();
         booking.setOutTime(LocalDateTime.now());
 
         // Fetch the parking details using the parking ID from booking
