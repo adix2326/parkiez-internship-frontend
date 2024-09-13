@@ -22,6 +22,7 @@ public interface BookingRepo extends MongoRepository<Booking, String>
 
 //    @Query("{ 'parkingId': ?0, 'vehicleType': ?1 , 'outTime': {$exists:  false}}")
    List<Booking> findAllByParkingIdAndVehicleTypeAndOutTimeIsNull(String parkingId, String vehicleType);
+   List<Booking> findAllByParkingIdAndVehicleType(String parkingId, String vehicleType);
 
     Boolean existsByVehicleNoAndOutTimeIsNull(String vehicleNo);
 

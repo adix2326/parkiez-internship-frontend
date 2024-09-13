@@ -7,6 +7,7 @@ import Home from './components/LandingPage';
 import SignIn from './components/SignIn1';
 /* Operator */
 import OperatorDashboard from './Operator/OperatorDashboard';
+import Parkings from './Operator/Parkings';
 import OperatorDailyReport from './Operator/OperatorDailyReport';
 import Analytics from './Operator/OperatorAnalytics';
 import Attendants from './Operator/Attendants';
@@ -41,6 +42,12 @@ function App() {
             <Route path="make-exit" element={<MakeExit />} />
           </Route>
 
+          <Route path="/parkings"
+            element={
+              <Parkings />
+            } 
+          />
+          
           <Route
             path="/operatordashboard"
             element={

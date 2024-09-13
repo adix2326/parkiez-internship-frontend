@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import TextInput from '../components/textinput';
 import ParkiezLogo from '../assets/parkiez_logo.png';
-import HeroImage from '../assets/hero_image.jpg'; // Assuming this is the same image used in Home
+import HeroImage from '../assets/hero_image.jpg';
 import authService from '../services/auth.service';
 
 const SignIn1 = () => {
@@ -23,7 +23,7 @@ const SignIn1 = () => {
         navigate('/admindashboard');
       } else if (role === 'ROLE_OPERATOR') {
         toast.success('Login successful!');
-        navigate('/operatordashboard');
+        navigate('/parkings');
       }else if (role === 'ROLE_ATTENDANT') {
         toast.success('Login successful!');
         navigate('/attendantdashboard');

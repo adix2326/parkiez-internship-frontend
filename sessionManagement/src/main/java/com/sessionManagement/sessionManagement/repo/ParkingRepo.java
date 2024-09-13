@@ -4,6 +4,7 @@ import com.sessionManagement.sessionManagement.documents.Parking;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ParkingRepo extends MongoRepository<Parking, String>
 {
@@ -11,4 +12,7 @@ public interface ParkingRepo extends MongoRepository<Parking, String>
     boolean existsByTitle(String title);
 
     List<Parking> findByOperatorId(String operatorId);
+
+    @Override
+    Optional<Parking> findById(String s);
 }

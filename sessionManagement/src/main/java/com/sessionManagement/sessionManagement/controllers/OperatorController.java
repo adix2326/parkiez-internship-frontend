@@ -204,6 +204,8 @@ public class OperatorController
 
     @GetMapping("/getParkings")
     public ResponseEntity<List<Parking>> getParkings(@RequestParam String phoneNo) {
+        System.out.println("in getParkings" +
+                "");
         String operatorId = operatorService.getOperatorIdByPhoneNo(phoneNo);
         if (operatorId == null) {
             return ResponseEntity.badRequest().body(Collections.emptyList());

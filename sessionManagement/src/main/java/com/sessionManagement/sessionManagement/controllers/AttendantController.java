@@ -1,3 +1,15 @@
+//You can manually convert the IST time to UTC before storing it in MongoDB:
+
+//ZonedDateTime istTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
+//ZonedDateTime utcTime = istTime.withZoneSameInstant(ZoneId.of("UTC"));
+//booking.setInTime(utcTime.toLocalDateTime());
+
+//This ensures that the time is stored in UTC, and when you retrieve it, you'll convert it back to IST:
+
+//ZonedDateTime utcTime = booking.getInTime().atZone(ZoneId.of("UTC"));
+//ZonedDateTime istTime = utcTime.withZoneSameInstant(ZoneId.of("Asia/Kolkata"));
+
+
 package com.sessionManagement.sessionManagement.controllers;
 
 import com.sessionManagement.sessionManagement.documents.Attendant;
@@ -18,6 +30,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 @RestController
@@ -51,7 +65,7 @@ public class AttendantController
     }
 
     @GetMapping("/currentlyParkedVehicles")
-    public ResponseEntity<?> currentlyParked2Wheelers(@RequestParam String phoneNo){
+    public ResponseEntity<?> currentlyParkedVehicles(@RequestParam String phoneNo){
         HashMap<String, Long> pair = new HashMap<>();
         Optional<Attendant> attendant = attendantRepo.findByPhoneNo(phoneNo);
         if(attendant.isPresent()){
@@ -64,19 +78,55 @@ public class AttendantController
             }
 
             String parkingId = attendant1.getParkingId();
-            System.out.println(parkingId);
-            long totalParkedFourWheelers = -11;
-            long totalParkedTwoWheelers = -11;
-            List<Booking> bookings = bookingRepo.findAllByParkingIdAndVehicleTypeAndOutTimeIsNull(parkingId, "4wheeler");
-//            System.out.println(bookings);
-            totalParkedFourWheelers = bookings.size();
-            List<Booking> bookings2 = bookingRepo.findAllByParkingIdAndVehicleTypeAndOutTimeIsNull(parkingId, "2wheeler");
-//            System.out.println(bookings2);
-            totalParkedTwoWheelers = bookings2.size();
-//            long totalParkedFourWheelers = bookingRepo.countParkedFourWheelers(parkingId);
-//            long totalParkedTwoWheelers = bookingRepo.countParkedTwoWheelers(parkingId);
-            pair.put("4w", totalParkedFourWheelers);
-            pair.put("2w", totalParkedTwoWheelers);
+
+            Optional<Parking> parkingOpt = parkingRepo.findById(parkingId);
+            if (parkingOpt.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Parking details not found for the attendant.");
+            }
+            Parking parking = parkingOpt.get();
+            String costingType = parking.getCostingType();
+
+//            System.out.println("Costing type: "+ costingType);
+
+            List<Booking> fourWheelerBookings = bookingRepo.findAllByParkingIdAndVehicleTypeAndOutTimeIsNull(parkingId, "4wheeler");
+            long currentlyParkedFourWheelers = fourWheelerBookings.size();
+            List<Booking> twoWheelerBookings = bookingRepo.findAllByParkingIdAndVehicleTypeAndOutTimeIsNull(parkingId, "2wheeler");
+            long currentlyParkedTwoWheelers = twoWheelerBookings.size();
+
+            pair.put("4w_currently", currentlyParkedFourWheelers);
+            pair.put("2w_currently", currentlyParkedTwoWheelers);
+
+            List<Booking> fourWheelerBookings1 = bookingRepo.findAllByParkingIdAndVehicleType(parkingId, "4wheeler");
+            long tillNowParkedFourWheelers = fourWheelerBookings1.size();
+            List<Booking> twoWheelerBookings1 = bookingRepo.findAllByParkingIdAndVehicleType(parkingId, "2wheeler");
+            long tillNowParkedTwoWheelers = twoWheelerBookings1.size();
+
+            pair.put("4w_tillNow", tillNowParkedFourWheelers);
+            pair.put("2w_tillNow", tillNowParkedTwoWheelers);
+
+            long total4WheelerRevenue = 0;
+            long total2WheelerRevenue = 0;
+
+            if (costingType.equalsIgnoreCase("fixed")) {
+                // Fixed costing calculation
+                total4WheelerRevenue = (long) (tillNowParkedFourWheelers * parking.getCost4wheeler());
+                total2WheelerRevenue = (long) (tillNowParkedTwoWheelers * parking.getCost2wheeler());
+            } else if (costingType.equalsIgnoreCase("hourly")) {
+                // Hourly costing calculation
+                for (Booking booking : fourWheelerBookings) {
+                    long durationMinutes = java.time.Duration.between(booking.getInTime(), booking.getOutTime()).toMinutes();
+                    total4WheelerRevenue += (long) ((durationMinutes / 60.0) * parking.getCost4wheeler());
+                }
+                for (Booking booking : twoWheelerBookings) {
+                    long durationMinutes = java.time.Duration.between(booking.getInTime(), booking.getOutTime()).toMinutes();
+                    total2WheelerRevenue += (long) ((durationMinutes / 60.0) * parking.getCost2wheeler());
+                }
+            }
+
+            pair.put("4w_revenue", total4WheelerRevenue);
+            pair.put("2w_revenue", total2WheelerRevenue);
+
         }
 
         return ResponseEntity.ok(pair);
@@ -98,7 +148,7 @@ public class AttendantController
 
         if( bookingRepo.existsByVehicleNoAndOutTimeIsNull(vehicleNo) )
         {
-            System.out.println("in if");
+//            System.out.println("in if");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Vehicle Already parked");
         }
 
@@ -109,6 +159,13 @@ public class AttendantController
         booking.setAttendantPhoneNo(attendantPhoneNo);
 
         booking.setParkingId(parkingId);
+
+//        ZonedDateTime istTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
+//        ZonedDateTime utcTime = istTime.withZoneSameInstant(ZoneId.of("UTC"));
+//        booking.setInTime(utcTime.toLocalDateTime());
+
+//        System.out.println("utc time add bokking: " + utcTime.toLocalDateTime());
+
         booking.setInTime(LocalDateTime.now());
 //        booking.setOutTime(LocalDateTime.now());
         booking.setAmountPaid(0);
@@ -133,6 +190,9 @@ public class AttendantController
         Booking booking = bookings.get(0);
 //        Optional<Booking> bookingOpt = bookingRepo.findBookingsByVehicleNo(vehicleNo);
 
+
+//        System.out.println(booking.getInTime());
+//
         booking.setOutTime(LocalDateTime.now());
 
         // Fetch the parking details using the parking ID from booking

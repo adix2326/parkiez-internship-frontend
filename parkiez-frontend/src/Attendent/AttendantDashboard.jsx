@@ -16,8 +16,8 @@ const AttendantDashboard = () => {
       <Header toggleSidebar={toggleSidebar} />
       <div className="flex flex-1 overflow-hidden">
         <AttendantSidebar sidebarOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
-        <div className="flex-1 flex flex-col">
-          <div className="flex-1 p-4 overflow-y-auto">
+        <div className="flex-1 flex flex-col h-max">
+          <div className="flex-1 p-4 overflow-y-auto h-max">
             <Outlet />
           </div>
         </div>
