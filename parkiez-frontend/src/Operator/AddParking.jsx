@@ -111,6 +111,7 @@ const AddParkingArea = () => {
     if (!validateForm()) return;
 
     try {
+      console.log("in try of addbooking");
       parkingData.opId = currentUser.id;
       await addParking(parkingData);
       toast.success("Parking Added Successfully");

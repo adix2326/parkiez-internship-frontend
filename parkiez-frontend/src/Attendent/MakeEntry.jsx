@@ -6,32 +6,38 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const MakeEntry = () => {
+  const currentUser = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
   const [bookingData, setbookingData] = useState({
-    // parkingId:'',
+    parkingId:'',
     paymentType: "",
-    // inTime:'',
-    // outTime:'',
+    inTime:null,
+    outTime:null,
     vehicleNo: "",
     vehicleType: "",
     phoneNo: "",
-    attendantPhoneNo: "",
+    transactionId: null,
+    attendantPhoneNo: currentUser.username,
   });
 
   const handleChange = (e) => {
-    setbookingData({ ...bookingData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setbookingData({ ...bookingData, [name]: value });
+    // validateField(name, value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const currentUser = JSON.parse(localStorage.getItem("user"));
-      bookingData.attendantPhoneNo = currentUser.username;
+      
+      // bookingData.attendantPhoneNo = 
       await addBooking(bookingData);
-      toast.success("Booking Done!!");
-      navigate("/attendantdashboard");
+      console.log("Made entry, done");      
+      navigate('/attendantdashboard');
+      toast.success("Booking Done !!")
     } catch (error) {
+      console.log("in error of MakeEntry", error);
       toast.error(error.response?.data || error.message);
     }
   };
@@ -91,7 +97,7 @@ const MakeEntry = () => {
             <option value="online">Online</option>
           </select>
         </div>
-        <CustomBtn text="Add Entry" type="submit" textcolor="white" />
+        <CustomBtn text={"Add Entry"} type="button" textcolor="white" onClick={handleSubmit} />
       </form>
     </div>
   );

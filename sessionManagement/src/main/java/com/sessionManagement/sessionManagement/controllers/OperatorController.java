@@ -6,10 +6,12 @@ import com.sessionManagement.sessionManagement.repo.*;
 import com.sessionManagement.sessionManagement.services.*;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import com.sessionManagement.sessionManagement.controllers.AttendantController;
 
 import java.util.*;
 
@@ -25,6 +27,9 @@ public class OperatorController
 
     @Autowired
     private OperatorRepo operatorRepo;
+
+    @Autowired
+    private AttendantController attendantController;
 
     @Autowired
     private OperatorService operatorService;
@@ -72,6 +77,11 @@ public class OperatorController
         attendant.setPassword(encoder.encode(attendant.getPassword()));
 
         return ResponseEntity.ok(attendantRepo.save(attendant));
+    }
+
+    @GetMapping("/currentlyParkedVehicles")
+    public ResponseEntity<?> currentlyParkedVehicles(@RequestParam String parkingId) throws RuntimeException{
+        return ResponseEntity.ok(attendantController.currentlyParkedVehiclesUsingParkingId(parkingId));
     }
 
     @GetMapping("/forOperator")
@@ -204,8 +214,8 @@ public class OperatorController
 
     @GetMapping("/getParkings")
     public ResponseEntity<List<Parking>> getParkings(@RequestParam String phoneNo) {
-        System.out.println("in getParkings" +
-                "");
+//        System.out.println("in getParkings" +
+//                "");
         String operatorId = operatorService.getOperatorIdByPhoneNo(phoneNo);
         if (operatorId == null) {
             return ResponseEntity.badRequest().body(Collections.emptyList());

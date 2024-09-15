@@ -23,20 +23,17 @@ import com.sessionManagement.sessionManagement.services.BookingService;
 import com.sessionManagement.sessionManagement.services.TransactionIdSequenceService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.*;
 
 @RestController
 @RequestMapping("api/attendant")
-@PreAuthorize("hasRole('ROLE_ATTENDANT')")
+@PreAuthorize("hasAnyRole('ROLE_OPERATOR', 'ROLE_ATTENDANT')")
 @CrossOrigin( origins = "http://localhost:5173/", allowCredentials = "true")
 public class AttendantController
 {
@@ -65,7 +62,7 @@ public class AttendantController
     }
 
     @GetMapping("/currentlyParkedVehicles")
-    public ResponseEntity<?> currentlyParkedVehicles(@RequestParam String phoneNo){
+    public ResponseEntity<?> currentlyParkedVehicles(@RequestParam String phoneNo) throws Exception {
         HashMap<String, Long> pair = new HashMap<>();
         Optional<Attendant> attendant = attendantRepo.findByPhoneNo(phoneNo);
         if(attendant.isPresent()){
@@ -76,77 +73,32 @@ public class AttendantController
             if (!attendantRepo.existsByPhoneNo(phoneNo)){
                 return ResponseEntity.badRequest().body("Attendant with specified phone number does not exist");
             }
-
-            String parkingId = attendant1.getParkingId();
-
-            Optional<Parking> parkingOpt = parkingRepo.findById(parkingId);
-            if (parkingOpt.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("Parking details not found for the attendant.");
-            }
-            Parking parking = parkingOpt.get();
-            String costingType = parking.getCostingType();
-
-//            System.out.println("Costing type: "+ costingType);
-
-            List<Booking> fourWheelerBookings = bookingRepo.findAllByParkingIdAndVehicleTypeAndOutTimeIsNull(parkingId, "4wheeler");
-            long currentlyParkedFourWheelers = fourWheelerBookings.size();
-            List<Booking> twoWheelerBookings = bookingRepo.findAllByParkingIdAndVehicleTypeAndOutTimeIsNull(parkingId, "2wheeler");
-            long currentlyParkedTwoWheelers = twoWheelerBookings.size();
-
-            pair.put("4w_currently", currentlyParkedFourWheelers);
-            pair.put("2w_currently", currentlyParkedTwoWheelers);
-
-            List<Booking> fourWheelerBookings1 = bookingRepo.findAllByParkingIdAndVehicleType(parkingId, "4wheeler");
-            long tillNowParkedFourWheelers = fourWheelerBookings1.size();
-            List<Booking> twoWheelerBookings1 = bookingRepo.findAllByParkingIdAndVehicleType(parkingId, "2wheeler");
-            long tillNowParkedTwoWheelers = twoWheelerBookings1.size();
-
-            pair.put("4w_tillNow", tillNowParkedFourWheelers);
-            pair.put("2w_tillNow", tillNowParkedTwoWheelers);
-
-            long total4WheelerRevenue = 0;
-            long total2WheelerRevenue = 0;
-
-            if (costingType.equalsIgnoreCase("fixed")) {
-                // Fixed costing calculation
-                total4WheelerRevenue = (long) (tillNowParkedFourWheelers * parking.getCost4wheeler());
-                total2WheelerRevenue = (long) (tillNowParkedTwoWheelers * parking.getCost2wheeler());
-            } else if (costingType.equalsIgnoreCase("hourly")) {
-                // Hourly costing calculation
-                for (Booking booking : fourWheelerBookings) {
-                    long durationMinutes = java.time.Duration.between(booking.getInTime(), booking.getOutTime()).toMinutes();
-                    total4WheelerRevenue += (long) ((durationMinutes / 60.0) * parking.getCost4wheeler());
-                }
-                for (Booking booking : twoWheelerBookings) {
-                    long durationMinutes = java.time.Duration.between(booking.getInTime(), booking.getOutTime()).toMinutes();
-                    total2WheelerRevenue += (long) ((durationMinutes / 60.0) * parking.getCost2wheeler());
-                }
-            }
-
-            pair.put("4w_revenue", total4WheelerRevenue);
-            pair.put("2w_revenue", total2WheelerRevenue);
-
+            pair = currentlyParkedVehiclesUsingParkingId(attendant1.getParkingId());
         }
-
         return ResponseEntity.ok(pair);
     }
 
     @PostMapping("/addBooking")
-    public ResponseEntity<?> addBooking(@Valid @RequestParam String paymentType,
-                                               @RequestParam String vehicleNo,
-                                               @RequestParam String vehicleType,
-                                               @RequestParam String phoneNo,
-                                               @RequestParam String attendantPhoneNo) {
+//    public ResponseEntity<?> addBooking(@Valid @RequestParam String paymentType,
+//                                        @RequestParam String vehicleNo,
+//                                        @RequestParam String vehicleType,
+//                                        @RequestParam String phoneNo,
+//                                        @RequestParam String attendantPhoneNo) {
+    public ResponseEntity<?> addBooking(@RequestBody Booking booking1) {
 //        System.out.println("hi dhamale");
-        Optional<Attendant> attendantOpt = attendantRepo.findByPhoneNo(attendantPhoneNo);
+        String vehicleNo = booking1.getVehicleNo();
+        String vehicleType = booking1.getVehicleType();
+        String phoneNo = booking1.getPhoneNo();
+        String attendantPhoneNo = booking1.getAttendantPhoneNo();
+        String paymentType = booking1.getPaymentType();
+        Optional<Attendant> attendantOpt = attendantRepo.findByPhoneNo(booking1.getAttendantPhoneNo());
 
         if (!attendantOpt.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Attendant not found with phone number: " + attendantPhoneNo);
+                    .body("Attendant not found with phone number: " + booking1.getAttendantPhoneNo());
         }
 
-        if( bookingRepo.existsByVehicleNoAndOutTimeIsNull(vehicleNo) )
+        if( bookingRepo.existsByVehicleNoAndOutTimeIsNull(booking1.getVehicleNo()) )
         {
 //            System.out.println("in if");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Vehicle Already parked");
@@ -160,30 +112,29 @@ public class AttendantController
 
         booking.setParkingId(parkingId);
 
-//        ZonedDateTime istTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
-//        ZonedDateTime utcTime = istTime.withZoneSameInstant(ZoneId.of("UTC"));
-//        booking.setInTime(utcTime.toLocalDateTime());
-
-//        System.out.println("utc time add bokking: " + utcTime.toLocalDateTime());
-
         booking.setInTime(LocalDateTime.now());
-//        booking.setOutTime(LocalDateTime.now());
         booking.setAmountPaid(0);
         long transactionId = transactionIdSequenceService.generateSequence("transaction_sequence");
         booking.setTransactionId(String.valueOf(transactionId));
 
+        Parking parking = parkingRepo.findByParkingId(parkingId);
+        if (vehicleType.equalsIgnoreCase("2wheeler")) {
+            parking.setRemaining2wheeler(parking.getRemaining2wheeler()-1);
+        } else if (vehicleType.equalsIgnoreCase("4wheeler")) {
+            parking.setRemaining4wheeler(parking.getRemaining4wheeler()-1);
+        }
+        parkingRepo.save(parking);
         return ResponseEntity.ok(bookingRepo.save(booking));
     }
 
     @PostMapping("/exit")
     public ResponseEntity<?> exitParking(@RequestParam String vehicleNo) {
-
         List<Booking> bookings = bookingRepo.findAllBookingByVehicleNoAndOutTimeIsNull(vehicleNo);
         if(bookings.size()>1)
         {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Check database entries, contact Administrator immediately");
         }
-        if(bookings.size() == 0)
+        if(bookings.isEmpty())
         {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No such parked vehicle");
         }
@@ -207,32 +158,97 @@ public class AttendantController
         Parking parking = parkingOpt.get();
         String costingType = parking.getCostingType();
         int amountPaid = 0;
-
+        Parking parking11 = parkingRepo.findByParkingId(parkingId);
         // Calculate the amount to be paid based on costing type
         if (costingType.equalsIgnoreCase("fixed")) {
             if (booking.getVehicleType().equalsIgnoreCase("2wheeler")) {
+                parking11.setRemaining2wheeler(parking11.getRemaining2wheeler()+1);
                 amountPaid = parking.getCost2wheeler();
             } else if (booking.getVehicleType().equalsIgnoreCase("4wheeler")) {
+                parking11.setRemaining4wheeler(parking11.getRemaining4wheeler()+1);
                 amountPaid = parking.getCost4wheeler();
             }
         } else if (costingType.equalsIgnoreCase("hourly")) {
-            long durationMinutes = java.time.Duration.between(booking.getInTime(), booking.getOutTime()).toMinutes();
-            int hourlyRate = booking.getVehicleType().equalsIgnoreCase("2wheeler") ?
-                    parking.getCost2wheeler() : parking.getCost4wheeler();
-            amountPaid = (int) ((durationMinutes / 60.0) * hourlyRate);
-//            System.out.println("Duration in Minutes: " + durationMinutes);
-//            System.out.println("Hourly Rate: " + hourlyRate);
-//            System.out.println("Amount Paid: " + amountPaid);
-        }
 
+            long durationMinutes = java.time.Duration.between(booking.getInTime(), booking.getOutTime()).toMinutes();
+            long hourlyRate = booking.getVehicleType().equalsIgnoreCase("2wheeler") ?
+                    parking.getCost2wheeler() : parking.getCost4wheeler();
+            if( booking.getVehicleType().equalsIgnoreCase("2wheeler") )
+            {
+                parking11.setRemaining2wheeler(parking11.getRemaining2wheeler()+1);
+            }
+            else
+            {
+                parking11.setRemaining4wheeler(parking11.getRemaining4wheeler()+1);
+            }
+            amountPaid = (int) (((double)durationMinutes / 60.0) * (double) hourlyRate);
+        }
+        parkingRepo.save(parking11);
         booking.setAmountPaid(amountPaid);
 
-        // Save the updated booking
         bookingRepo.save(booking);
-
         return ResponseEntity.ok(booking);
     }
 
+    public HashMap<String, Long> currentlyParkedVehiclesUsingParkingId(String parkingId) throws RuntimeException{
+        HashMap<String, Long> pair = new HashMap<>();
+        Optional<Parking> parkingOpt = parkingRepo.findById(parkingId);
+        if (parkingOpt.isEmpty()) {
+            throw new RuntimeException("Error from currentlyParkedVehiclesUsingParkingId, No Such Parking Exists.");
+        }
+        Parking parking = parkingOpt.get();
+        String costingType = parking.getCostingType();
+
+//            System.out.println("Costing type: "+ costingType);
+
+        List<Booking> fourWheelerBookings = bookingRepo.findAllByParkingIdAndVehicleTypeAndOutTimeIsNull(parkingId, "4wheeler");
+        long currentlyParkedFourWheelers = fourWheelerBookings.size();
+        List<Booking> twoWheelerBookings = bookingRepo.findAllByParkingIdAndVehicleTypeAndOutTimeIsNull(parkingId, "2wheeler");
+        long currentlyParkedTwoWheelers = twoWheelerBookings.size();
+
+        pair.put("4w_currently", currentlyParkedFourWheelers);
+        pair.put("2w_currently", currentlyParkedTwoWheelers);
+
+        List<Booking> fourWheelerBookings1 = bookingRepo.findAllByParkingIdAndVehicleType(parkingId, "4wheeler");
+        long tillNowParkedFourWheelers = fourWheelerBookings1.size();
+        List<Booking> twoWheelerBookings1 = bookingRepo.findAllByParkingIdAndVehicleType(parkingId, "2wheeler");
+        long tillNowParkedTwoWheelers = twoWheelerBookings1.size();
+
+        pair.put("4w_tillNow", tillNowParkedFourWheelers);
+        pair.put("2w_tillNow", tillNowParkedTwoWheelers);
+
+        double total4WheelerRevenue = 0;
+        double total2WheelerRevenue = 0;
+
+        if (costingType.equalsIgnoreCase("fixed")) {
+            // Fixed costing calculation
+            total4WheelerRevenue = (tillNowParkedFourWheelers * parking.getCost4wheeler());
+            total2WheelerRevenue = (tillNowParkedTwoWheelers * parking.getCost2wheeler());
+        } else if (costingType.equalsIgnoreCase("hourly")) {
+            // Hourly costing calculation
+            for (Booking booking : fourWheelerBookings1) {
+                double durationMinutes = java.time.Duration.between(booking.getInTime(), booking.getOutTime()).toMinutes();
+                total4WheelerRevenue += ((durationMinutes / 60.0) * parking.getCost4wheeler());
+                System.out.println("DurationMinutes: "+durationMinutes);
+                System.out.println("Parking Cost: "+parking.getCost4wheeler());
+                System.out.println("In-time: "+booking.getInTime());
+                System.out.println("Out-Time: "+booking.getOutTime());
+            }
+            for (Booking booking : twoWheelerBookings1) {
+                double durationMinutes = java.time.Duration.between(booking.getInTime(), booking.getOutTime()).toMinutes();
+                total2WheelerRevenue += ((durationMinutes / 60.0) * parking.getCost2wheeler());
+                System.out.println("DurationMinutes: "+durationMinutes);
+                System.out.println("Parking Cost: "+parking.getCost2wheeler());
+                System.out.println("In-time: "+booking.getInTime());
+                System.out.println("Out-Time: "+booking.getOutTime());
+            }
+        }
+
+        pair.put("4w_revenue", (long)total4WheelerRevenue);
+        pair.put("2w_revenue", (long)total2WheelerRevenue);
+
+        return pair;
+    }
 
 }
 

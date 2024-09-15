@@ -11,8 +11,11 @@ public interface ParkingRepo extends MongoRepository<Parking, String>
 
     boolean existsByTitle(String title);
 
+    Parking findByParkingId(String parkingId);
+
     List<Parking> findByOperatorId(String operatorId);
 
     @Override
     Optional<Parking> findById(String s);
+
 }

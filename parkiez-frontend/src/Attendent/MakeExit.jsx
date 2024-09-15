@@ -64,13 +64,6 @@ const MakeExit = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // setLoading(true);
-
-    // const allValid = Object.keys(formData).every(field => validateField(field, formData[field]));
-    // if (!allValid) {
-    //   setLoading(false);
-    //   return;
-    // }
 
     try {
       console.log(formData);
@@ -111,7 +104,7 @@ const MakeExit = () => {
 
         <CustomBtn
           // text={loading ? "Processing..." : (checked ? "Exit" : "Check")}
-          text={"exit"}
+          text={"Exit"}
           type="button"
           textcolor="white"
           // onClick={checked ? handleSubmit : handleCheck}
